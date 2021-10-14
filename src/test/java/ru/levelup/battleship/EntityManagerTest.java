@@ -13,6 +13,7 @@ import ru.levelup.battleship.dao.*;
 import ru.levelup.battleship.model.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -46,14 +47,10 @@ public class EntityManagerTest {
         cellsRepository.save(cell2);
         Cell cell3 = new Cell(3, 4);
         cellsRepository.save(cell3);
-        Cell cell4 = new Cell(3, 5);
-        cellsRepository.save(cell4);
-        Cell cell5 = new Cell(3, 6);
-        cellsRepository.save(cell5);
 
         Ship ship1 = new Ship(player1, Arrays.asList(cell1, cell2));
         shipsRepository.save(ship1);
-        Ship ship2 = new Ship(player2, Arrays.asList(cell3, cell4, cell5));
+        Ship ship2 = new Ship(player2, List.of(cell3));
         shipsRepository.save(ship2);
 
         Optional<User> foundUser = usersRepository.findById(player1.getId());
@@ -71,7 +68,10 @@ public class EntityManagerTest {
         foundShip = shipsRepository.findById(ship2.getId());
         Assert.assertTrue(foundShip.isPresent());
 
-        Optional<Cell> foundCell = cellsRepository.findById(cell3.getId());
+        Optional<Cell> foundCell = cellsRepository.findById(cell1.getId());
+        Assert.assertTrue(foundCell.isPresent());
+
+        foundCell = cellsRepository.findById(cell3.getId());
         Assert.assertTrue(foundCell.isPresent());
     }
 }
