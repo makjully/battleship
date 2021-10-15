@@ -22,6 +22,7 @@ import java.util.Optional;
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class EntityManagerTest {
+
     @Autowired
     private UsersRepository usersRepository;
     @Autowired
