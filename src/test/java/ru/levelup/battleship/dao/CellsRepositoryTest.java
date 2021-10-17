@@ -10,7 +10,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import ru.levelup.battleship.TestConfiguration;
 import ru.levelup.battleship.model.Cell;
 import ru.levelup.battleship.model.Ship;
@@ -51,9 +50,9 @@ public class CellsRepositoryTest {
         ship = new Ship(player, new ArrayList<>(Arrays.asList(cell_2_3, cell_2_4, cell_2_5)));
         shipsRepository.save(ship);
 
-        cellsRepository.updateCellWithShip(cell_2_3, ship);
-        cellsRepository.updateCellWithShip(cell_2_4, ship);
-        cellsRepository.updateCellWithShip(cell_2_5, ship);
+        cellsRepository.updateCell(cell_2_3, ship);
+        cellsRepository.updateCell(cell_2_4, ship);
+        cellsRepository.updateCell(cell_2_5, ship);
     }
 
     @Test

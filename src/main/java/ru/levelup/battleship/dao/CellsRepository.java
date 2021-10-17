@@ -16,10 +16,8 @@ public interface CellsRepository extends JpaRepository<Cell, Integer> {
 
     long countCellsByShip(Ship ship);
 
-    default void updateCellWithShip(Cell cell, Ship ship) {
+    default Cell updateCell(Cell cell, Ship ship) {
         cell.setShip(ship);
-        save(cell);
+        return save(cell);
     }
-
-    void deleteCellByCoordinateXAndCoordinateY(int x, int y);
 }
