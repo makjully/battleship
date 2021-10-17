@@ -10,6 +10,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import ru.levelup.battleship.TestConfiguration;
 import ru.levelup.battleship.model.Cell;
 import ru.levelup.battleship.model.Ship;
@@ -17,6 +18,7 @@ import ru.levelup.battleship.model.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfiguration.class)
@@ -71,21 +73,22 @@ public class CellsRepositoryTest {
 
     @Test
     public void countCellsByShip() {
-        long cellCount = cellsRepository.countCellsByShip(ship);
+        Assert.assertEquals(3, cellsRepository.countCellsByShip(ship));
 
-        Assert.assertEquals(3, cellCount);
+        cellsRepository.deleteAll();
+        Assert.assertEquals(0, cellsRepository.countCellsByShip(ship));
     }
 
     @Test
     public void deleteCell() {
         cellsRepository.delete(cell_2_5);
-        Cell cell = cellsRepository.findCellByCoordinateXAndCoordinateY(2, 5);
-        Assert.assertNull(cell);
+        Optional<Cell> deletedCell = cellsRepository.findById(cell_2_5.getId());
+        Assert.assertFalse(deletedCell.isPresent());
         Assert.assertEquals(2, cellsRepository.countCellsByShip(ship));
 
-        cellsRepository.deleteCellByCoordinateXAndCoordinateY(2, 3);
-        cell = cellsRepository.findCellByCoordinateXAndCoordinateY(2, 3);
-        Assert.assertNull(cell);
+        cellsRepository.delete(cell_2_3);
+        deletedCell = cellsRepository.findById(cell_2_3.getId());
+        Assert.assertFalse(deletedCell.isPresent());
         Assert.assertEquals(1, cellsRepository.countCellsByShip(ship));
     }
 }
