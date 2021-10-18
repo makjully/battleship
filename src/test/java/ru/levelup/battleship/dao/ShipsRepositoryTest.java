@@ -55,7 +55,8 @@ public class ShipsRepositoryTest {
 
     @Test
     public void saveShip() {
-        Ship newShip = shipsRepository.saveShip(player, Collections.emptyList());
+        Ship newShip = new Ship(player, Collections.emptyList());
+        newShip = shipsRepository.saveShip(newShip);
         Optional<Ship> savedShip = shipsRepository.findById(newShip.getId());
 
         Assert.assertTrue(savedShip.isPresent());

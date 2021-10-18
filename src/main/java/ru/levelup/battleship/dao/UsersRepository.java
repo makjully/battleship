@@ -15,4 +15,9 @@ public interface UsersRepository extends JpaRepository<User, Integer> {
         user.setRating(user.getRating() + winnerPoints);
         return save(user);
     }
+
+    default void updateWhenBoardPrepared(User user) {
+        user.setPlayerFieldArranged(true);
+        save(user);
+    }
 }

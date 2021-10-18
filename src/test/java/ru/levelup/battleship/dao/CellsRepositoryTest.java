@@ -40,19 +40,22 @@ public class CellsRepositoryTest {
 
     @Before
     public void config() {
-        cell_2_3 = cellsRepository.saveCell(2, 3);
-        cell_2_4 = cellsRepository.saveCell(2, 4);
-        cell_2_5 = cellsRepository.saveCell(2, 5);
+        cell_2_3 = new Cell(2, 3);
+        cell_2_4 = new Cell(2, 4);
+        cell_2_5 = new Cell(2, 5);
 
         User player = new User("darthVader", "order66");
         usersRepository.save(player);
 
         ship = new Ship(player, new ArrayList<>(Arrays.asList(cell_2_3, cell_2_4, cell_2_5)));
-        shipsRepository.save(ship);
+        shipsRepository.saveShip(ship);
 
-        cellsRepository.updateCell(cell_2_3, ship);
-        cellsRepository.updateCell(cell_2_4, ship);
-        cellsRepository.updateCell(cell_2_5, ship);
+        cell_2_3.setShip(ship);
+        cell_2_4.setShip(ship);
+        cell_2_5.setShip(ship);
+        cellsRepository.saveCell(cell_2_3);
+        cellsRepository.saveCell(cell_2_4);
+        cellsRepository.saveCell(cell_2_5);
     }
 
     @Test

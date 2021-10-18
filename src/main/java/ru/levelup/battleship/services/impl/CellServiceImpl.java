@@ -17,7 +17,7 @@ public class CellServiceImpl implements CellService {
     @Override
     @Transactional
     public Cell saveCell(Cell cell) {
-        return repository.saveCell(cell.getCoordinateX(), cell.getCoordinateY());
+        return repository.saveCell(cell);
     }
 
     @Override
@@ -28,12 +28,6 @@ public class CellServiceImpl implements CellService {
     @Override
     public long countCellsByShip(Ship ship) {
         return repository.countCellsByShip(ship);
-    }
-
-    @Override
-    @Transactional
-    public Cell updateCellWithShip(Cell cell, Ship ship) {
-        return repository.updateCell(cell, ship);
     }
 
     @Override

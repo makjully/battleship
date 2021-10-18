@@ -11,7 +11,5 @@ public interface CellService {
 
     long countCellsByShip(Ship ship);
 
-    Cell updateCellWithShip(Cell cell, Ship ship);
-
     void deleteCell(Cell cell);
 }

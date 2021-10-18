@@ -50,10 +50,9 @@ public class UsersRepositoryTest {
 
     @Test
     public void isPlayerFieldArranged() {
-        user.setPlayerFieldArranged(true);
-        usersRepository.save(user);
+        usersRepository.updateWhenBoardPrepared(user);
         Optional<User> updated = usersRepository.findById(user.getId());
 
-        Assert.assertTrue(updated.get().isPlayerFieldArranged());
+        Assert.assertTrue(updated.stream().iterator().next().isPlayerFieldArranged());
     }
 }

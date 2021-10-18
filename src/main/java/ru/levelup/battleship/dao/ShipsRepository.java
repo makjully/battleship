@@ -11,8 +11,8 @@ import java.util.List;
 @Repository
 public interface ShipsRepository extends JpaRepository<Ship, Integer> {
 
-    default Ship saveShip(User player, List<Cell> location) {
-        return (save(new Ship(player, location)));
+    default Ship saveShip(Ship ship) {
+        return (save(ship));
     }
 
     long countShipsByPlayer(User player);
