@@ -9,4 +9,6 @@ public interface UserService {
     User updateRating(User user, double winnerPoints);
 
     void updateWhenBoardPrepared(User user);
+
+    User findByLogin(String login);
 }

@@ -30,4 +30,10 @@ public class UserServiceImpl implements UserService {
     public void updateWhenBoardPrepared(User user) {
         repository.updateWhenBoardPrepared(user);
     }
+
+    @Override
+    public User findByLogin(String login) {
+        return repository.findByLogin(login);
+    }
+
 }

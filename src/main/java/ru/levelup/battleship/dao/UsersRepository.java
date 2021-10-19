@@ -20,4 +20,6 @@ public interface UsersRepository extends JpaRepository<User, Integer> {
         user.setPlayerFieldArranged(true);
         save(user);
     }
+
+    User findByLogin(String login);
 }

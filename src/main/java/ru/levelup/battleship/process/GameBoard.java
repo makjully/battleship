@@ -1,6 +1,5 @@
 package ru.levelup.battleship.process;
 
-import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -20,19 +19,24 @@ public class GameBoard {
     @Setter
     private User player;
 
-    @Getter
-    private final List<Ship> ships;
-
     private final int[][] tempBoard;
 
     public GameBoard() {
         this.tempBoard = new int[10][10];
-        this.ships = new ArrayList<>();
+        for (int[] row : this.tempBoard)
+            Arrays.fill(row, -1);
     }
 
-    public void arrangeAllShips() {
+    public List<Ship> arrangeAllShips() {
+        List<Ship> ships = new ArrayList<>();
+
         List<Integer> shipsDecks = new ArrayList<>(Arrays.asList(4, 3, 3, 2, 2, 2, 1, 1, 1, 1));
         shipsDecks.forEach(element -> ships.add(buildShip(element)));
+
+        if (ships.size() < 10)
+            arrangeAllShips();
+
+        return ships;
     }
 
     private Ship buildShip(int shipSize) {
@@ -40,14 +44,13 @@ public class GameBoard {
 
         int[][] shipCoordinates = generateShipsCoordinates(shipSize, orientation);
 
-        while (!arrangeShip(shipCoordinates, shipSize, orientation)) {
-            buildShip(shipSize);
-        }
-
         ArrayList<Cell> shipCells = new ArrayList<>();
         for (int[] xy : shipCoordinates) {
             shipCells.add(new Cell(xy[0], xy[1]));
         }
+
+        if(!arrangeShip(shipCoordinates, shipSize, orientation))
+            buildShip(shipSize);
 
         Ship ship = new Ship(player, shipCells);
         ship.setPlayer(player);
@@ -76,7 +79,7 @@ public class GameBoard {
 
     private int generateShipOrientation() {
         Random random = new Random();
-        return random.nextInt(2) - 1; // 0 = horizontal, 1 = vertical
+        return random.nextInt(2); // 0 = horizontal, 1 = vertical
     }
 
     private int[] generateStartShipCoordinate(int shipSize, int orientation) {

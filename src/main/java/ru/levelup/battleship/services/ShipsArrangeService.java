@@ -1,8 +1,12 @@
 package ru.levelup.battleship.services;
 
+import ru.levelup.battleship.model.Cell;
 import ru.levelup.battleship.model.User;
+
+
+import java.util.List;
 
 public interface ShipsArrangeService {
 
-    void arrangeShips(User user);
+    List<Cell> arrangeShips(User user);
 }
