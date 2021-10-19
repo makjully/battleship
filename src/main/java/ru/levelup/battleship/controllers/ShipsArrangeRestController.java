@@ -1,0 +1,30 @@
+package ru.levelup.battleship.controllers;
+
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import ru.levelup.battleship.model.Cell;
+import ru.levelup.battleship.model.User;
+import ru.levelup.battleship.services.ShipsArrangeService;
+import ru.levelup.battleship.services.UserService;
+
+import java.util.List;
+
+@RestController
+@AllArgsConstructor
+public class ShipsArrangeRestController {
+
+    private ShipsArrangeService shipsArrangeService;
+    private UserService userService;
+
+    @GetMapping("/{login}/arrange")
+    public ResponseEntity<List<Cell>> getCoordinates(@PathVariable String login) {
+        User user = userService.findByLogin(login);
+        List<Cell> cells = shipsArrangeService.arrangeShips(user);
+        userService.updateWhenBoardPrepared(user);
+
+        return cells.isEmpty() ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                : new ResponseEntity<>(cells, HttpStatus.OK);
+    }
+}
