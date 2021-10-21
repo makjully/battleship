@@ -34,6 +34,7 @@ public class CellsRepositoryTest {
     private UsersRepository usersRepository;
 
     private Ship ship;
+    private User player;
     private Cell cell_2_3;
     private Cell cell_2_4;
     private Cell cell_2_5;
@@ -44,33 +45,11 @@ public class CellsRepositoryTest {
         cell_2_4 = new Cell(2, 4);
         cell_2_5 = new Cell(2, 5);
 
-        User player = new User("darthVader", "order66");
+        player = new User("darthVader", "order66");
         usersRepository.save(player);
 
         ship = new Ship(player, new ArrayList<>(Arrays.asList(cell_2_3, cell_2_4, cell_2_5)));
         shipsRepository.saveShip(ship);
-
-        cell_2_3.setShip(ship);
-        cell_2_4.setShip(ship);
-        cell_2_5.setShip(ship);
-        cellsRepository.saveCell(cell_2_3);
-        cellsRepository.saveCell(cell_2_4);
-        cellsRepository.saveCell(cell_2_5);
-    }
-
-    @Test
-    public void findCellByCoordinateXAndCoordinateY() {
-        Cell cell = cellsRepository.findCellByCoordinateXAndCoordinateY(2, 4);
-        Assert.assertEquals(cell_2_4, cell);
-
-        cell = cellsRepository.findCellByCoordinateXAndCoordinateY(2, 3);
-        Assert.assertEquals(cell_2_3, cell);
-
-        cell = cellsRepository.findCellByCoordinateXAndCoordinateY(2, 5);
-        Assert.assertEquals(cell_2_5, cell);
-
-        cell = cellsRepository.findCellByCoordinateXAndCoordinateY(6, 6);
-        Assert.assertNull(cell);
     }
 
     @Test
@@ -92,5 +71,14 @@ public class CellsRepositoryTest {
         deletedCell = cellsRepository.findById(cell_2_3.getId());
         Assert.assertFalse(deletedCell.isPresent());
         Assert.assertEquals(1, cellsRepository.countCellsByShip(ship));
+    }
+
+    @Test
+    public void findCellThatHit() {
+        Cell found = cellsRepository.findCell(player, 2, 4);
+        Assert.assertEquals(cell_2_4, found);
+
+        found = cellsRepository.findCell(player, 5, 5);
+        Assert.assertNull(found);
     }
 }

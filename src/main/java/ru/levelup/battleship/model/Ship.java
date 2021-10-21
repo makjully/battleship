@@ -24,11 +24,12 @@ public class Ship {
     @JoinColumn(name = "user_id")
     private User player;
 
-    @OneToMany(mappedBy = "ship")
+    @OneToMany(mappedBy = "ship", cascade = CascadeType.PERSIST)
     private List<Cell> location;
 
     public Ship (User player, List<Cell> location) {
         this.player = player;
         this.location = location;
+        location.forEach(cell -> cell.setShip(this));
     }
 }

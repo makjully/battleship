@@ -18,13 +18,15 @@ public class ShipsArrangeRestController {
     private ShipsArrangeService shipsArrangeService;
     private UserService userService;
 
-    @GetMapping("/{login}/arrange")
+    @GetMapping("api/{login}/arrange")
     public ResponseEntity<List<Cell>> getCoordinates(@PathVariable String login) {
         User user = userService.findByLogin(login);
+        if (user == null)
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
         List<Cell> cells = shipsArrangeService.arrangeShips(user);
         userService.updateWhenBoardPrepared(user);
 
-        return cells.isEmpty() ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
-                : new ResponseEntity<>(cells, HttpStatus.OK);
+        return new ResponseEntity<>(cells, HttpStatus.OK);
     }
 }

@@ -1,7 +1,6 @@
 package ru.levelup.battleship.process;
 
 import lombok.Setter;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import ru.levelup.battleship.model.Cell;
 import ru.levelup.battleship.model.Ship;
@@ -13,15 +12,14 @@ import java.util.List;
 import java.util.Random;
 
 @Component
-@Scope("prototype")
-public class GameBoard {
+public class ShipsArrange {
 
     @Setter
     private User player;
 
     private final int[][] tempBoard;
 
-    public GameBoard() {
+    public ShipsArrange() {
         this.tempBoard = new int[10][10];
         for (int[] row : this.tempBoard)
             Arrays.fill(row, -1);

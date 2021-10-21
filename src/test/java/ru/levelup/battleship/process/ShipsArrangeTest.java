@@ -21,19 +21,19 @@ import java.util.List;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-test.properties")
-public class GameBoardTest {
+public class ShipsArrangeTest {
 
     @Autowired
-    private GameBoard gameBoard;
+    private ShipsArrange shipsArrange;
 
     @Before
     public void config() {
-        gameBoard.setPlayer(new User("Joker", "T_T"));
+        shipsArrange.setPlayer(new User("Joker", "T_T"));
     }
 
     @Test
     public void arrangeShips() {
-        List<Ship> ships = gameBoard.arrangeAllShips();
+        List<Ship> ships = shipsArrange.arrangeAllShips();
 
         ships.forEach(ship -> ship.getLocation().forEach(cell ->
                 System.out.println(cell.getCoordinateX() + " " + cell.getCoordinateY())));
