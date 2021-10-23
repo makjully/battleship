@@ -2,6 +2,7 @@ package ru.levelup.battleship.controllers;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.levelup.battleship.model.Cell;
@@ -18,7 +19,7 @@ public class ShipsArrangeRestController {
     private ShipsArrangeService shipsArrangeService;
     private UserService userService;
 
-    @GetMapping("api/{login}/arrange")
+    @GetMapping(value = "api/{login}/arrange", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Cell>> getCoordinates(@PathVariable String login) {
         User user = userService.findByLogin(login);
         if (user == null)
