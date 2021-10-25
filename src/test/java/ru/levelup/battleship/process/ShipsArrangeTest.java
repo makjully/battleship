@@ -1,7 +1,6 @@
 package ru.levelup.battleship.process;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.levelup.battleship.TestConfiguration;
 import ru.levelup.battleship.model.Ship;
-import ru.levelup.battleship.model.User;
 
 import java.util.List;
 
@@ -25,11 +23,6 @@ public class ShipsArrangeTest {
 
     @Autowired
     private ShipsArrange shipsArrange;
-
-    @Before
-    public void config() {
-        shipsArrange.setPlayer(new User("Joker", "T_T"));
-    }
 
     @Test
     public void arrangeShips() {

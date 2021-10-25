@@ -39,7 +39,7 @@ public class GamesRepositoryTest {
 
     @Test
     public void checkGameCreated() {
-        Assert.assertTrue(gamesRepository.findById(game.getId()).isPresent());
+        Assert.assertTrue(gamesRepository.findById(Math.toIntExact(game.getId())).isPresent());
         Assert.assertNotNull(game.getPlayerToMove());
 
         System.out.println(game.getPlayerToMove().getLogin());

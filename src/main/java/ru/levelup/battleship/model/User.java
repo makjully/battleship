@@ -6,9 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
@@ -20,16 +17,13 @@ public class User {
     @Id
     @GeneratedValue
     @EqualsAndHashCode.Include
-    private int id;
+    private Long id;
 
     @Column(unique = true, nullable = false, length = 10)
-    @Pattern(regexp = "[a-zA-Z0-9]{4,10}", message = "Login must contain 4-10 characters: letters and/or numbers")
     @EqualsAndHashCode.Include
     private String login;
 
     @Column(nullable = false, length = 20)
-    @Size(min = 5, max = 20)
-    @NotBlank(message = "Password can not be empty")
     private String password;
 
     @Column(nullable = false)

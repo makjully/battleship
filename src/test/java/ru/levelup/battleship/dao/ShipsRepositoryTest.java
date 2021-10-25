@@ -38,10 +38,12 @@ public class ShipsRepositoryTest {
         player = new User("padme", "r2d2_c3po");
         usersRepository.save(player);
 
-        ship_1 = new Ship(player, Collections.emptyList());
+        ship_1 = new Ship(Collections.emptyList());
+        ship_1.setPlayer(player);
         shipsRepository.save(ship_1);
 
-        ship_2 = new Ship(player, Collections.emptyList());
+        ship_2 = new Ship(Collections.emptyList());
+        ship_1.setPlayer(player);
         shipsRepository.save(ship_2);
     }
 
@@ -55,9 +57,9 @@ public class ShipsRepositoryTest {
 
     @Test
     public void saveShip() {
-        Ship newShip = new Ship(player, Collections.emptyList());
-        newShip = shipsRepository.saveShip(newShip);
-        Optional<Ship> savedShip = shipsRepository.findById(newShip.getId());
+        Ship newShip = new Ship(Collections.emptyList());
+        newShip = shipsRepository.saveShip(newShip, player);
+        Optional<Ship> savedShip = shipsRepository.findById(Math.toIntExact(newShip.getId()));
 
         Assert.assertTrue(savedShip.isPresent());
         Assert.assertEquals(3, shipsRepository.countShipsByPlayer(player));
@@ -66,7 +68,7 @@ public class ShipsRepositoryTest {
     @Test
     public void deleteShip() {
         shipsRepository.delete(ship_2);
-        Optional<Ship> ship = shipsRepository.findById(ship_2.getId());
+        Optional<Ship> ship = shipsRepository.findById(Math.toIntExact(ship_2.getId()));
 
         Assert.assertFalse(ship.isPresent());
         Assert.assertEquals(1, shipsRepository.countShipsByPlayer(player));

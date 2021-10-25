@@ -16,8 +16,8 @@ public class ShipServiceImpl implements ShipService {
 
     @Override
     @Transactional
-    public Ship saveShip(Ship ship) {
-        return repository.saveShip(ship);
+    public Ship saveShip(Ship ship, User player) {
+        return repository.saveShip(ship, player);
     }
 
     @Override

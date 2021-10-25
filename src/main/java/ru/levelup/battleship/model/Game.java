@@ -17,7 +17,7 @@ public class Game {
     @Id
     @GeneratedValue
     @EqualsAndHashCode.Include
-    private int id;
+    private Long id;
 
     @ManyToOne(optional = false)
     private User player1;

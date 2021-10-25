@@ -8,7 +8,8 @@ import ru.levelup.battleship.model.User;
 @Repository
 public interface ShipsRepository extends JpaRepository<Ship, Integer> {
 
-    default Ship saveShip(Ship ship) {
+    default Ship saveShip(Ship ship, User player) {
+        ship.setPlayer(player);
         return (save(ship));
     }
 

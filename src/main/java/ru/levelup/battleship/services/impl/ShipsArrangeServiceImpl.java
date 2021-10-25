@@ -20,11 +20,10 @@ public class ShipsArrangeServiceImpl implements ShipsArrangeService {
 
     @Override
     public List<Cell> arrangeShips(User user) {
-        board.setPlayer(user);
         List<Cell> cells = new ArrayList<>();
 
         board.arrangeAllShips().forEach(ship -> {
-            ship = shipService.saveShip(ship);
+            ship = shipService.saveShip(ship, user);
             cells.addAll(ship.getLocation());
         });
 

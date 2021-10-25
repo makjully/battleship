@@ -17,7 +17,7 @@ public class Cell {
     @Id
     @GeneratedValue
     @EqualsAndHashCode.Include
-    private int id;
+    private Long id;
 
     @Column(name = "coordinate_x")
     @EqualsAndHashCode.Include

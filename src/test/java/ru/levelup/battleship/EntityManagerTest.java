@@ -49,30 +49,32 @@ public class EntityManagerTest {
         Cell cell3 = new Cell(3, 4);
         cellsRepository.save(cell3);
 
-        Ship ship1 = new Ship(player1, Arrays.asList(cell1, cell2));
+        Ship ship1 = new Ship(Arrays.asList(cell1, cell2));
+        ship1.setPlayer(player1);
         shipsRepository.save(ship1);
-        Ship ship2 = new Ship(player2, List.of(cell3));
+        Ship ship2 = new Ship(List.of(cell3));
+        ship2.setPlayer(player2);
         shipsRepository.save(ship2);
 
-        Optional<User> foundUser = usersRepository.findById(player1.getId());
+        Optional<User> foundUser = usersRepository.findById(Math.toIntExact(player1.getId()));
         Assert.assertTrue(foundUser.isPresent());
 
-        foundUser = usersRepository.findById(player2.getId());
+        foundUser = usersRepository.findById(Math.toIntExact(player2.getId()));
         Assert.assertTrue(foundUser.isPresent());
 
-        Optional<Game> foundGame = gamesRepository.findById(game.getId());
+        Optional<Game> foundGame = gamesRepository.findById(Math.toIntExact(game.getId()));
         Assert.assertTrue(foundGame.isPresent());
 
-        Optional<Ship> foundShip = shipsRepository.findById(ship1.getId());
+        Optional<Ship> foundShip = shipsRepository.findById(Math.toIntExact(ship1.getId()));
         Assert.assertTrue(foundShip.isPresent());
 
-        foundShip = shipsRepository.findById(ship2.getId());
+        foundShip = shipsRepository.findById(Math.toIntExact(ship2.getId()));
         Assert.assertTrue(foundShip.isPresent());
 
-        Optional<Cell> foundCell = cellsRepository.findById(cell1.getId());
+        Optional<Cell> foundCell = cellsRepository.findById(Math.toIntExact(cell1.getId()));
         Assert.assertTrue(foundCell.isPresent());
 
-        foundCell = cellsRepository.findById(cell3.getId());
+        foundCell = cellsRepository.findById(Math.toIntExact(cell3.getId()));
         Assert.assertTrue(foundCell.isPresent());
     }
 }

@@ -18,7 +18,7 @@ public class Ship {
     @Id
     @GeneratedValue
     @EqualsAndHashCode.Include
-    private int id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -27,8 +27,7 @@ public class Ship {
     @OneToMany(mappedBy = "ship", cascade = CascadeType.PERSIST)
     private List<Cell> location;
 
-    public Ship (User player, List<Cell> location) {
-        this.player = player;
+    public Ship (List<Cell> location) {
         this.location = location;
         location.forEach(cell -> cell.setShip(this));
     }
