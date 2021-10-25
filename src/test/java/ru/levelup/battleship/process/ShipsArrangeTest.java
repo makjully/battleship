@@ -26,10 +26,13 @@ public class ShipsArrangeTest {
 
     @Test
     public void arrangeShips() {
-        List<Ship> ships = shipsArrange.arrangeAllShips();
+        List<Ship> ships = shipsArrange.getArrangedShips();
 
-        ships.forEach(ship -> ship.getLocation().forEach(cell ->
-                System.out.println(cell.getCoordinateX() + " " + cell.getCoordinateY())));
+        for (Ship ship : ships) {
+            ship.getLocation().forEach(cell ->
+                    System.out.printf("%d-%d ", cell.getCoordinateX(), cell.getCoordinateY()));
+            System.out.println();
+        }
 
         Assert.assertEquals(10, ships.size());
         Assert.assertEquals(4, ships.get(0).getLocation().size());

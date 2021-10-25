@@ -22,7 +22,7 @@ public class ShipsArrangeServiceImpl implements ShipsArrangeService {
     public List<Cell> arrangeShips(User user) {
         List<Cell> cells = new ArrayList<>();
 
-        board.arrangeAllShips().forEach(ship -> {
+        board.getArrangedShips().forEach(ship -> {
             ship = shipService.saveShip(ship, user);
             cells.addAll(ship.getLocation());
         });

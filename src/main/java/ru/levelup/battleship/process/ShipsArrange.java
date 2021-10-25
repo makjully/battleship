@@ -1,204 +1,84 @@
 package ru.levelup.battleship.process;
 
-import lombok.Setter;
 import org.springframework.stereotype.Component;
 import ru.levelup.battleship.model.Cell;
 import ru.levelup.battleship.model.Ship;
-import ru.levelup.battleship.model.User;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 @Component
 public class ShipsArrange {
 
-    @Setter
-    private User player;
-
     private final int[][] tempBoard;
+    private final Random random;
+    private final List<Ship> ships;
 
     public ShipsArrange() {
         this.tempBoard = new int[10][10];
-        for (int[] row : this.tempBoard)
-            Arrays.fill(row, -1);
+        this.random = new Random();
+        this.ships = new ArrayList<>();
     }
 
-    public List<Ship> arrangeAllShips() {
-        List<Ship> ships = new ArrayList<>();
+    public List<Ship> getArrangedShips() {
+        arrange();
 
-        List<Integer> shipsDecks = new ArrayList<>(Arrays.asList(4, 3, 3, 2, 2, 2, 1, 1, 1, 1));
-        shipsDecks.forEach(element -> ships.add(buildShip(element)));
-
-        if (ships.size() < 10)
-            arrangeAllShips();
-
-        return ships;
+        return ships.size() < 10 ? getArrangedShips() : ships;
     }
 
-    private Ship buildShip(int shipSize) {
-        int orientation = generateShipOrientation();
+    private void arrange() {
+        int x, y, kx, ky;
+        boolean success;
+        int boardSize = tempBoard.length;
 
-        int[][] shipCoordinates = generateShipsCoordinates(shipSize, orientation);
-
-        ArrayList<Cell> shipCells = new ArrayList<>();
-        for (int[] xy : shipCoordinates) {
-            shipCells.add(new Cell(xy[0], xy[1]));
+        for (int n = 3; n >= 0; n--) {
+            for (int m = 0; m <= 3 - n; m++) {
+                do {
+                    x = random.nextInt(boardSize);
+                    y = random.nextInt(boardSize);
+                    kx = random.nextInt(2);
+                    if (kx == 0)
+                        ky = 1;
+                    else
+                        ky = 0;
+                    success = true;
+                    for (int j = 0; j <= n; j++) {
+                        if (!(isPossibleToArrange(x + kx * j, y + ky * j))) {
+                            success = false;
+                            break;
+                        }
+                    }
+                    if (success) {
+                        List<Cell> cells = new ArrayList<>();
+                        for (int k = 0; k <= n; k++) {
+                            int coordinateX = x + kx * k;
+                            int coordinateY = y + ky * k;
+                            tempBoard[coordinateX][coordinateY] = 1;
+                            cells.add(new Cell(coordinateX, coordinateY));
+                        }
+                        ships.add(new Ship(cells));
+                    }
+                }
+                while (!(success));
+            }
         }
-
-        if(!arrangeShip(shipCoordinates, shipSize, orientation))
-            buildShip(shipSize);
-
-        Ship ship = new Ship(player, shipCells);
-        ship.setPlayer(player);
-
-        return ship;
     }
 
-    private int[][] generateShipsCoordinates(int shipSize, int orientation) {
-        int[] startShip = generateStartShipCoordinate(shipSize, orientation);
+    private boolean isPossibleToArrange(int x, int y) {
+        int dx, dy;
 
-        int startX = startShip[0];
-        int startY = startShip[1];
-
-        int[][] shipCoordinates = new int[shipSize][2];
-        for (int[] coordinatePair : shipCoordinates) {
-            coordinatePair[0] = startX;
-            coordinatePair[1] = startY;
-            if (orientation == 0)
-                startY++;
-            else
-                startX++;
-        }
-
-        return shipCoordinates;
-    }
-
-    private int generateShipOrientation() {
-        Random random = new Random();
-        return random.nextInt(2); // 0 = horizontal, 1 = vertical
-    }
-
-    private int[] generateStartShipCoordinate(int shipSize, int orientation) {
-        Random random = new Random();
-        int[] xy = new int[2];
-
-        if (orientation == 0) {
-            xy[0] = random.nextInt(9);
-            xy[1] = random.nextInt(10 - shipSize);
-        } else {
-            xy[0] = random.nextInt(10 - shipSize);
-            xy[1] = random.nextInt(9);
-        }
-
-        return xy;
-    }
-
-    private boolean arrangeShip(int[][] shipCoordinates, int shipSize, int orientation) {
-        if (!arrangementPossible(shipCoordinates, shipSize, orientation))
-            return false;
-
-        arrangeShipOnTempBoard(shipCoordinates, shipSize, orientation);
-
-        return true;
-    }
-
-    private void arrangeShipOnTempBoard(int[][] shipCoordinates, int shipSize, int orientation) {
-        for (int[] shipCoordinate : shipCoordinates)
-            tempBoard[shipCoordinate[0]][shipCoordinate[1]] = 1;
-
-        List<Integer[]> shipAureole = getShipAureole(shipCoordinates, shipSize, orientation);
-
-        for (Integer[] shipAureoleCoordinate : shipAureole)
-            tempBoard[shipAureoleCoordinate[0]][shipAureoleCoordinate[1]] = 0;
-    }
-
-    private boolean arrangementPossible(int[][] shipCoordinates, int shipSize, int orientation) {
-        for (int[] shipCoordinate : shipCoordinates) {
-            if (tempBoard[shipCoordinate[0]][shipCoordinate[1]] == 1)
-                return false;
-        }
-
-        List<Integer[]> shipAureole = getShipAureole(shipCoordinates, shipSize, orientation);
-
-        for (Integer[] shipAureoleCoordinate : shipAureole) {
-            if (tempBoard[shipAureoleCoordinate[0]][shipAureoleCoordinate[1]] == 1)
-                return false;
-        }
-
-        return true;
-    }
-
-    private List<Integer[]> getShipAureole(int[][] shipCoordinates, int shipSize, int orientation) {
-        List<Integer[]> shipAureole = new ArrayList<>();
-
-        if (orientation == 1) {
-
-            if (shipCoordinates[0][1] + 1 <= 9) {
-                for (int[] shipCoordinate : shipCoordinates)
-                    shipAureole.add(new Integer[]{shipCoordinate[0], shipCoordinate[1] + 1});
-
-                if (shipCoordinates[0][0] - 1 >= 0)
-                    shipAureole.add(new Integer[]{shipCoordinates[0][0] - 1, shipCoordinates[0][1] + 1});
-
-                if (shipCoordinates[shipSize - 1][0] + 1 <= 9) {
-                    shipAureole.add(new Integer[]{shipCoordinates[shipSize - 1][0] + 1,
-                            shipCoordinates[shipSize - 1][1] + 1});
+        if ((x >= 0) & (x < 10) & (y >= 0) & (y < 10) && ((tempBoard[x][y] == 0) || (tempBoard[x][y] == 2))) {
+            for (int i = -1; i <= 1; i++) {
+                for (int j = -1; j <= 1; j++) {
+                    dx = x + i;
+                    dy = y + j;
+                    if ((dx >= 0) & (dx < 10) & (dy >= 0) & (dy < 10) && (tempBoard[dx][dy] == 1))
+                        return false;
                 }
             }
-
-            if (shipCoordinates[0][1] - 1 >= 0) {
-                for (int[] shipCoordinate : shipCoordinates)
-                    shipAureole.add(new Integer[]{shipCoordinate[0], shipCoordinate[1] - 1});
-
-                if (shipCoordinates[0][0] - 1 >= 0)
-                    shipAureole.add(new Integer[]{shipCoordinates[0][0] - 1, shipCoordinates[0][1] - 1});
-
-                if (shipCoordinates[shipSize - 1][0] + 1 <= 9)
-                    shipAureole.add(new Integer[]{shipCoordinates[shipSize - 1][0] + 1,
-                            shipCoordinates[shipSize - 1][1] - 1});
-            }
-
-            if (shipCoordinates[0][0] - 1 >= 0)
-                shipAureole.add(new Integer[]{shipCoordinates[0][0] - 1, shipCoordinates[0][1]});
-
-            if (shipCoordinates[shipSize - 1][0] + 1 <= 9)
-                shipAureole.add(new Integer[]{shipCoordinates[shipSize - 1][0] + 1, shipCoordinates[shipSize - 1][1]});
-
-        } else {
-
-            if (shipCoordinates[0][0] - 1 >= 0) {
-                for (int[] shipCoordinate : shipCoordinates)
-                    shipAureole.add(new Integer[]{shipCoordinate[0] - 1, shipCoordinate[1]});
-
-                if (shipCoordinates[shipSize - 1][1] + 1 <= 9)
-                    shipAureole.add(new Integer[]{shipCoordinates[shipSize - 1][0] - 1,
-                            shipCoordinates[shipSize - 1][1] + 1});
-
-                if (shipCoordinates[0][1] - 1 >= 0)
-                    shipAureole.add(new Integer[]{shipCoordinates[0][0] - 1, shipCoordinates[0][1] - 1});
-            }
-
-            if (shipCoordinates[0][0] + 1 <= 9) {
-                for (int[] shipCoordinate : shipCoordinates)
-                    shipAureole.add(new Integer[]{shipCoordinate[0] + 1, shipCoordinate[1]});
-
-                if (shipCoordinates[0][1] - 1 >= 0)
-                    shipAureole.add(new Integer[]{shipCoordinates[0][0] + 1, shipCoordinates[0][1] - 1});
-
-                if (shipCoordinates[shipSize - 1][1] + 1 <= 9)
-                    shipAureole.add(new Integer[]{shipCoordinates[shipSize - 1][0] + 1,
-                            shipCoordinates[shipSize - 1][1] + 1});
-            }
-
-            if (shipCoordinates[0][1] - 1 >= 0)
-                shipAureole.add(new Integer[]{shipCoordinates[0][0], shipCoordinates[0][1] - 1});
-
-            if (shipCoordinates[shipSize - 1][1] + 1 <= 9)
-                shipAureole.add(new Integer[]{shipCoordinates[shipSize - 1][0], shipCoordinates[shipSize - 1][1] + 1});
-        }
-
-        return shipAureole;
+            return true;
+        } else
+            return false;
     }
 }
