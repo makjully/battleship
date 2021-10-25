@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Signup</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.6.0/css/bootstrap.css"/>
+</head>
+<body style="background-color:white">
+<div class="container">
+    <div class="row-fluid">
+        <div class="col-md-6 offset-md-3"></div>
+        <form action="/signup" method="post" style="margin: 16px" th:object="${signupForm}">
+            <div class="form-group" id="login-form-group">
+                <label for="login">Login</label>
+                <input type="text" th:field="*{login}" id="login">
+                <div style="color: red" th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" th:field="*{password}" id="password">
+                <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+            </div>
+            <div class="form-group">
+                <label for="repeat_password">Repeat password</label>
+                <input type="password" th:field="*{repeatPassword}" id="repeat_password">
+                <div style="color: red" th:if="${#fields.hasGlobalErrors()}" th:errors="${signupForm}"></div>
+            </div>
+            <button type="submit" class="btn btn-outline-dark" style="width: 100%" id="signup-button">Sign up</button>
+        </form>
+        <form action="/login" method="get" style="margin: 16px">
+            <label for="logged_in">Already have an account?</label>
+            <button type="submit" class="btn btn-outline-dark" style="width: 100%" id="logged_in">Log in</button>
+        </form>
+    </div>
+</div>
