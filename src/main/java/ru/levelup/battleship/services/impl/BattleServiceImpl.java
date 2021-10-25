@@ -18,22 +18,22 @@ public class BattleServiceImpl implements BattleService {
     private CellService cellService;
 
     @Override
-    public String hit(User user, int x, int y) {
-        String result;
+    public Result hit(User user, int x, int y) {
+        Result result;
         Cell cellToHit = cellService.findCell(user, x, y);
         if (cellToHit == null)
-            return Result.MISS.name();
+            return Result.MISS;
 
         Ship shipHit = cellToHit.getShip();
         cellService.deleteCell(cellToHit);
 
         if (cellService.countCellsByShip(shipHit) > 0)
-            result = Result.HIT.name();
+            result = Result.HIT;
         else {
             if (shipService.countShipsByPlayer(user) == 0)
-                result = Result.WIN.name();
+                result = Result.WIN;
             else {
-                result = Result.SINK.name();
+                result = Result.SINK;
                 shipService.deleteShip(shipHit);
             }
         }
