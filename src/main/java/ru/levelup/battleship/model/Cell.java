@@ -1,5 +1,6 @@
 package ru.levelup.battleship.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,7 @@ public class Cell {
     @EqualsAndHashCode.Include
     private int coordinateY;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "ship_id")
     private Ship ship;

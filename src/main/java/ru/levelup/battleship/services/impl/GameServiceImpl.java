@@ -15,7 +15,7 @@ public class GameServiceImpl implements GameService {
     private GamesRepository repository;
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Game createGame(User player1, User player2) {
         return repository.createGame(player1, player2);
     }
@@ -27,7 +27,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Game updateGame(Game game, User playerToMove) {
         return repository.updateGame(game, playerToMove);
     }

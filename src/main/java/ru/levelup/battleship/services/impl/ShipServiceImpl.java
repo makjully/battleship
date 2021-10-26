@@ -15,7 +15,7 @@ public class ShipServiceImpl implements ShipService {
     private ShipsRepository repository;
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Ship saveShip(Ship ship, User player) {
         return repository.saveShip(ship, player);
     }
@@ -26,7 +26,7 @@ public class ShipServiceImpl implements ShipService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void deleteShip(Ship ship) {
         repository.delete(ship);
     }

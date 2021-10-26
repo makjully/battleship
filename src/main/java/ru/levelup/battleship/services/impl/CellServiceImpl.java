@@ -21,7 +21,7 @@ public class CellServiceImpl implements CellService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void deleteCell(Cell cell) {
         repository.delete(cell);
     }

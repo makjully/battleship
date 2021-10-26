@@ -14,19 +14,19 @@ public class UserServiceImpl implements UserService {
     private UsersRepository repository;
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public User updateRating(User user, double winnerPoints) {
         return repository.updateRating(user, winnerPoints);
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public User createUser(String login, String password) {
         return repository.createUser(login, password);
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void updateWhenBoardPrepared(User user) {
         repository.updateWhenBoardPrepared(user);
     }
@@ -35,5 +35,4 @@ public class UserServiceImpl implements UserService {
     public User findByLogin(String login) {
         return repository.findByLogin(login);
     }
-
 }
