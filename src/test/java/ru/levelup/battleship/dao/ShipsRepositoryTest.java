@@ -59,7 +59,7 @@ public class ShipsRepositoryTest {
     public void saveShip() {
         Ship newShip = new Ship(Collections.emptyList());
         newShip = shipsRepository.saveShip(newShip, player);
-        Optional<Ship> savedShip = shipsRepository.findById(Math.toIntExact(newShip.getId()));
+        Optional<Ship> savedShip = shipsRepository.findById(newShip.getId());
 
         Assert.assertTrue(savedShip.isPresent());
         Assert.assertEquals(3, shipsRepository.countShipsByPlayer(player));
@@ -68,7 +68,7 @@ public class ShipsRepositoryTest {
     @Test
     public void deleteShip() {
         shipsRepository.delete(ship_2);
-        Optional<Ship> ship = shipsRepository.findById(Math.toIntExact(ship_2.getId()));
+        Optional<Ship> ship = shipsRepository.findById(ship_2.getId());
 
         Assert.assertFalse(ship.isPresent());
         Assert.assertEquals(1, shipsRepository.countShipsByPlayer(player));

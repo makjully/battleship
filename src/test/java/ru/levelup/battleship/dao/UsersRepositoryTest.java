@@ -36,7 +36,7 @@ public class UsersRepositoryTest {
     @Test
     public void createUser() {
         User user = usersRepository.createUser("login", "password");
-        Optional<User> savedUser = usersRepository.findById(Math.toIntExact(user.getId()));
+        Optional<User> savedUser = usersRepository.findById(user.getId());
 
         Assert.assertTrue(savedUser.isPresent());
     }
@@ -51,7 +51,7 @@ public class UsersRepositoryTest {
     @Test
     public void isPlayerFieldArranged() {
         usersRepository.updateWhenBoardPrepared(user);
-        Optional<User> updated = usersRepository.findById(Math.toIntExact(user.getId()));
+        Optional<User> updated = usersRepository.findById(user.getId());
 
         Assert.assertTrue(updated.stream().iterator().next().isPlayerFieldArranged());
     }

@@ -63,12 +63,12 @@ public class CellsRepositoryTest {
     @Test
     public void deleteCell() {
         cellsRepository.delete(cell_2_5);
-        Optional<Cell> deletedCell = cellsRepository.findById(Math.toIntExact(cell_2_5.getId()));
+        Optional<Cell> deletedCell = cellsRepository.findById(cell_2_5.getId());
         Assert.assertFalse(deletedCell.isPresent());
         Assert.assertEquals(2, cellsRepository.countCellsByShip(ship));
 
         cellsRepository.delete(cell_2_3);
-        deletedCell = cellsRepository.findById(Math.toIntExact(cell_2_3.getId()));
+        deletedCell = cellsRepository.findById(cell_2_3.getId());
         Assert.assertFalse(deletedCell.isPresent());
         Assert.assertEquals(1, cellsRepository.countCellsByShip(ship));
     }

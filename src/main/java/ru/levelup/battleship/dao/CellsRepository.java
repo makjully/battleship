@@ -9,7 +9,7 @@ import ru.levelup.battleship.model.Ship;
 import ru.levelup.battleship.model.User;
 
 @Repository
-public interface CellsRepository extends JpaRepository<Cell, Integer> {
+public interface CellsRepository extends JpaRepository<Cell, Long> {
 
     @Query("from Cell cl where cl.coordinateX = :x and cl.coordinateY = :y and cl.ship.id = " +
             "(select s.id from Ship s where s.player = :user)")

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import ru.levelup.battleship.model.User;
 
 @Repository
-public interface UsersRepository extends JpaRepository<User, Integer> {
+public interface UsersRepository extends JpaRepository<User, Long> {
 
     default User createUser(String login, String password) {
         return save(new User(login, password));

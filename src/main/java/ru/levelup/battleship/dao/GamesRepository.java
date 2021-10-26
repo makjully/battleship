@@ -9,7 +9,7 @@ import ru.levelup.battleship.model.User;
 import java.util.Random;
 
 @Repository
-public interface GamesRepository extends JpaRepository<Game, Integer> {
+public interface GamesRepository extends JpaRepository<Game, Long> {
 
     default Game createGame(User player1, User player2) {
         Game game = new Game(player1, player2);

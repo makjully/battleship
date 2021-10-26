@@ -56,25 +56,25 @@ public class EntityManagerTest {
         ship2.setPlayer(player2);
         shipsRepository.save(ship2);
 
-        Optional<User> foundUser = usersRepository.findById(Math.toIntExact(player1.getId()));
+        Optional<User> foundUser = usersRepository.findById(player1.getId());
         Assert.assertTrue(foundUser.isPresent());
 
-        foundUser = usersRepository.findById(Math.toIntExact(player2.getId()));
+        foundUser = usersRepository.findById(player2.getId());
         Assert.assertTrue(foundUser.isPresent());
 
-        Optional<Game> foundGame = gamesRepository.findById(Math.toIntExact(game.getId()));
+        Optional<Game> foundGame = gamesRepository.findById(game.getId());
         Assert.assertTrue(foundGame.isPresent());
 
-        Optional<Ship> foundShip = shipsRepository.findById(Math.toIntExact(ship1.getId()));
+        Optional<Ship> foundShip = shipsRepository.findById(ship1.getId());
         Assert.assertTrue(foundShip.isPresent());
 
-        foundShip = shipsRepository.findById(Math.toIntExact(ship2.getId()));
+        foundShip = shipsRepository.findById(ship2.getId());
         Assert.assertTrue(foundShip.isPresent());
 
-        Optional<Cell> foundCell = cellsRepository.findById(Math.toIntExact(cell1.getId()));
+        Optional<Cell> foundCell = cellsRepository.findById(cell1.getId());
         Assert.assertTrue(foundCell.isPresent());
 
-        foundCell = cellsRepository.findById(Math.toIntExact(cell3.getId()));
+        foundCell = cellsRepository.findById(cell3.getId());
         Assert.assertTrue(foundCell.isPresent());
     }
 }
