@@ -2,13 +2,11 @@ package ru.levelup.battleship.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 import ru.levelup.battleship.model.Game;
 import ru.levelup.battleship.model.User;
 
 import java.util.Random;
 
-@Repository
 public interface GamesRepository extends JpaRepository<Game, Long> {
 
     default Game createGame(User player1, User player2) {
