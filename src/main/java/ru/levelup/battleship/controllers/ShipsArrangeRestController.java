@@ -19,7 +19,7 @@ public class ShipsArrangeRestController {
     private ShipsArrangeService shipsArrangeService;
     private UserService userService;
 
-    @GetMapping(value = "api/{login}/arrange", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "api/arrange/{login}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Cell>> getCoordinates(@PathVariable String login) {
         User user = userService.findByLogin(login);
         if (user == null)
