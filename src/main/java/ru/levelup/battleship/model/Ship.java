@@ -16,7 +16,8 @@ import java.util.List;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Ship {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ships_id_seq")
+    @SequenceGenerator(name = "ships_id_seq", allocationSize = 1)
     @EqualsAndHashCode.Include
     private Long id;
 

@@ -15,7 +15,8 @@ import javax.persistence.*;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Game {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "games_id_seq")
+    @SequenceGenerator(name = "games_id_seq", allocationSize = 1)
     @EqualsAndHashCode.Include
     private Long id;
 

@@ -15,8 +15,10 @@ import javax.persistence.*;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Cell {
+    @JsonIgnore
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cells_id_seq")
+    @SequenceGenerator(name = "cells_id_seq", allocationSize = 1)
     @EqualsAndHashCode.Include
     private Long id;
 
