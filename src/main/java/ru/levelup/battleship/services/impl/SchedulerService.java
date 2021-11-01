@@ -7,11 +7,11 @@ import ru.levelup.battleship.services.GameRoomService;
 
 import java.time.LocalDateTime;
 
-@Service
+//@Service
 @AllArgsConstructor
 public class SchedulerService {
 
-    private static final String CRON = "0 0/1 * * * *";
+    private static final String CRON = "0 * * * * *";
 
     private final GameRoomService service;
 
