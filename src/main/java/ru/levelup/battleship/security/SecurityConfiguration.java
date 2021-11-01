@@ -22,9 +22,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf();
 
         http.authorizeRequests()
-                .antMatchers("/api/user/*", loginUrl, "/signup").permitAll()
+                .antMatchers(loginUrl, "/signup", "/app/rooms/create").permitAll()
                 .antMatchers(HttpMethod.GET, "/**/*.js", "/**/*.css").permitAll()
-                .antMatchers("/", "/app/**", "/api/**").authenticated()
+                .antMatchers("/", "/app/**", "/api/**").hasRole("user")
                 .anyRequest().denyAll();
 
         http.exceptionHandling()
@@ -34,7 +34,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.formLogin()
                 .loginPage(loginUrl)
                 .loginProcessingUrl(loginUrl)
-                .defaultSuccessUrl("/app/main", true)
+                .defaultSuccessUrl("/app/rooms", true)
                 .usernameParameter("login")
                 .passwordParameter("password")
                 .permitAll();

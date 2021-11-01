@@ -24,7 +24,7 @@ public class User {
     @EqualsAndHashCode.Include
     private String login;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 60)
     private String password;
 
     @Column(nullable = false)
