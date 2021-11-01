@@ -3,9 +3,12 @@ package ru.levelup.battleship.controllers;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.levelup.battleship.model.GameRoom;
 import ru.levelup.battleship.model.User;
@@ -24,14 +27,30 @@ public class GameRoomsController {
     @GetMapping("app/rooms")
     public String returnGameRooms(Model model,
                                   @RequestParam(defaultValue = "1") int page,
-                                  @RequestParam(defaultValue = "") String opponentLogin) {
-        User opponent = userService.findByLogin(opponentLogin);
-        model.addAttribute("opponent", opponent);
+                                  Authentication authentication) {
+        User user = userService.findByLogin(authentication.getName());
+        model.addAttribute("user", user);
 
         model.addAttribute("page", page);
 
         Page<GameRoom> rooms = roomService.findActualGameRooms(PageRequest.of(page - 1, PAGE_RESULTS));
         model.addAttribute("rooms", rooms);
+
+        return "rooms";
+    }
+
+    @PostMapping("app/rooms/join")
+    public String joinRoom(Model model,
+                           @ModelAttribute("user") User user,
+                           @RequestParam(defaultValue = "") String opponentLogin) {
+        User opponent = userService.findByLogin(opponentLogin);
+
+        return "rooms";
+    }
+
+    @PostMapping("app/rooms/create")
+    public String createRoom(@ModelAttribute("user") User user) {
+        roomService.createRoom(user);
 
         return "rooms";
     }

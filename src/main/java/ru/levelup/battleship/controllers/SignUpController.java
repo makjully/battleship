@@ -2,6 +2,7 @@ package ru.levelup.battleship.controllers;
 
 import lombok.AllArgsConstructor;
 import org.springframework.orm.jpa.JpaSystemException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -18,6 +19,7 @@ import javax.validation.Valid;
 public class SignUpController {
 
     private UserService service;
+    private final PasswordEncoder passwordEncoder;
     private static final String SIGNUP = "signup";
 
     @GetMapping("/signup")
@@ -32,7 +34,7 @@ public class SignUpController {
             return SIGNUP;
 
         try {
-            service.createUser(signupForm.getLogin(), signupForm.getPassword());
+            service.createUser(signupForm.getLogin(), passwordEncoder.encode(signupForm.getPassword()));
         } catch (JpaSystemException e) {
             bindingResult.addError(new FieldError("signupForm", "login",
                     "User with this login already exists."));
