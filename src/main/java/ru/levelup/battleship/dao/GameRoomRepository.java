@@ -12,7 +12,7 @@ public interface GameRoomRepository extends JpaRepository<GameRoom, Long> {
 
     void deleteGameRoomsByAcceptingIsNullAndTimestampIsLessThanEqual(LocalDateTime time);
 
-    Page<GameRoom> findGameRoomsByAcceptingIsNull(Pageable pageable);
+    Page<GameRoom> findGameRoomsByAcceptingIsNullOrderByTimestampDesc(Pageable pageable);
 
     default GameRoom createRoom(User inviter) {
         return save(new GameRoom(inviter));
@@ -22,4 +22,6 @@ public interface GameRoomRepository extends JpaRepository<GameRoom, Long> {
         room.setAccepting(accepting);
         return save(room);
     }
+
+    GameRoom findGameRoomByInviter(User inviter);
 }

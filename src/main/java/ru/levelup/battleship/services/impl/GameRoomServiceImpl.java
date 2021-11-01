@@ -25,7 +25,7 @@ public class GameRoomServiceImpl implements GameRoomService {
 
     @Override
     public Page<GameRoom> findActualGameRooms(Pageable pageable) {
-        return repository.findGameRoomsByAcceptingIsNull(pageable);
+        return repository.findGameRoomsByAcceptingIsNullOrderByTimestampDesc(pageable);
     }
 
     @Override
@@ -38,5 +38,16 @@ public class GameRoomServiceImpl implements GameRoomService {
     @Transactional(rollbackFor = Exception.class)
     public GameRoom updateRoomWhenAccept(GameRoom room, User accepting) {
         return repository.updateRoom(room, accepting);
+    }
+
+    @Override
+    public GameRoom findGameRoomByInviter(User inviter) {
+        return repository.findGameRoomByInviter(inviter);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteGameRoomAfterBattle(GameRoom room) {
+        repository.delete(room);
     }
 }

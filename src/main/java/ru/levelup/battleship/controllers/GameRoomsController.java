@@ -3,6 +3,7 @@ package ru.levelup.battleship.controllers;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.view.RedirectView;
 import ru.levelup.battleship.model.GameRoom;
 import ru.levelup.battleship.model.User;
 import ru.levelup.battleship.services.GameRoomService;
@@ -23,6 +25,11 @@ public class GameRoomsController {
 
     private GameRoomService roomService;
     private UserService userService;
+
+    @GetMapping({"/", "/app"})
+    public RedirectView index() {
+        return new RedirectView("app/rooms");
+    }
 
     @GetMapping("app/rooms")
     public String returnGameRooms(Model model,
@@ -42,16 +49,27 @@ public class GameRoomsController {
     @PostMapping("app/rooms/join")
     public String joinRoom(Model model,
                            @ModelAttribute("user") User user,
-                           @RequestParam(defaultValue = "") String opponentLogin) {
+                           @RequestParam(defaultValue = "") String opponentLogin,
+                           Authentication authentication) {
         User opponent = userService.findByLogin(opponentLogin);
+        GameRoom room = roomService.findGameRoomByInviter(opponent);
 
-        return "rooms";
+        if (room.getAccepting() == null) {
+            roomService.updateRoomWhenAccept(room, user);
+            model.addAttribute("room", room);
+        } else
+            return "rooms";
+
+        return "redirect: app/main";
     }
 
     @PostMapping("app/rooms/create")
-    public String createRoom(@ModelAttribute("user") User user) {
-        roomService.createRoom(user);
+    public String createRoom(Model model,
+                             @ModelAttribute("user") User user,
+                             Authentication authentication) {
+        GameRoom room = roomService.createRoom(user);
+        model.addAttribute("room", room);
 
-        return "rooms";
+        return "redirect: app/main";
     }
 }

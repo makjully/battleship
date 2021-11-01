@@ -16,4 +16,8 @@ public interface GameRoomService {
     GameRoom createRoom(User inviter);
 
     GameRoom updateRoomWhenAccept(GameRoom room, User accepting);
+
+    GameRoom findGameRoomByInviter(User inviter);
+
+    void deleteGameRoomAfterBattle(GameRoom room);
 }
