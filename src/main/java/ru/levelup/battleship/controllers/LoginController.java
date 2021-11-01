@@ -10,7 +10,7 @@ public class LoginController {
     @GetMapping("/login")
     public String showLoginForm(Authentication authentication) {
         if (authentication != null)
-            return "redirect: app/main";
+            return "redirect: app/rooms";
         return "login";
     }
 }
