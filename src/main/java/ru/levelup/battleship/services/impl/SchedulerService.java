@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class SchedulerService {
 
-    private static final String CRON = "0 0/15 * * * *";
+    private static final String CRON = "0 0/1 * * * *";
 
     private final GameRoomService service;
 

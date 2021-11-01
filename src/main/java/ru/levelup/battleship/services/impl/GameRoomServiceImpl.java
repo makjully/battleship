@@ -20,7 +20,7 @@ public class GameRoomServiceImpl implements GameRoomService {
 
     @Override
     public void deleteExpiredRooms(LocalDateTime time) {
-        repository.deleteGameRoomsByTimestampIsLessThanEqual(time);
+        repository.deleteGameRoomsByAcceptingIsNullAndTimestampIsLessThanEqual(time);
     }
 
     @Override

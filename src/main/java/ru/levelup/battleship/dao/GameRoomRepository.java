@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 public interface GameRoomRepository extends JpaRepository<GameRoom, Long> {
 
-    void deleteGameRoomsByTimestampIsLessThanEqual(LocalDateTime time);
+    void deleteGameRoomsByAcceptingIsNullAndTimestampIsLessThanEqual(LocalDateTime time);
 
     Page<GameRoom> findGameRoomsByAcceptingIsNull(Pageable pageable);
 
