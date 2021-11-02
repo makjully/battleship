@@ -22,7 +22,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf();
 
         http.authorizeRequests()
-                .antMatchers(loginUrl, "/signup", "/app/rooms/create").permitAll()
+                .antMatchers(loginUrl, "/signup").permitAll()
                 .antMatchers(HttpMethod.GET, "/**/*.js", "/**/*.css").permitAll()
                 .antMatchers("/", "/app/**", "/api/**").hasRole("user")
                 .anyRequest().denyAll();
