@@ -20,4 +20,6 @@ public interface GameRoomService {
     GameRoom findGameRoomByInviter(User inviter);
 
     void deleteGameRoomAfterBattle(GameRoom room);
+
+    GameRoom findById(Long id);
 }

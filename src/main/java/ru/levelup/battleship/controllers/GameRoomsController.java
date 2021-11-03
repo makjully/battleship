@@ -7,7 +7,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 import ru.levelup.battleship.model.GameRoom;
@@ -19,14 +18,14 @@ import ru.levelup.battleship.services.UserService;
 @AllArgsConstructor
 public class GameRoomsController {
 
-    public static final int PAGE_RESULTS = 10;
+    public static final int PAGE_RESULTS = 9;
 
     private GameRoomService roomService;
     private UserService userService;
 
     @GetMapping({"/", "/app"})
     public RedirectView index() {
-        return new RedirectView("app/rooms");
+        return new RedirectView("app/main");
     }
 
     @GetMapping("app/rooms")
@@ -42,32 +41,5 @@ public class GameRoomsController {
         model.addAttribute("rooms", rooms);
 
         return "rooms";
-    }
-
-    @PostMapping("app/rooms/join")
-    public String joinRoom(Model model,
-                           @RequestParam(defaultValue = "") String opponentLogin,
-                           Authentication authentication) {
-        User user = userService.findByLogin(authentication.getName());
-        User opponent = userService.findByLogin(opponentLogin);
-        GameRoom room = roomService.findGameRoomByInviter(opponent);
-
-        if (room.getAccepting() == null) {
-            roomService.updateRoomWhenAccept(room, user);
-            model.addAttribute("room", room);
-        } else
-            return "rooms";
-
-        return "redirect:app/main";
-    }
-
-    @PostMapping("app/rooms/create")
-    public String createRoom(Model model,
-                             Authentication authentication) {
-        User user = userService.findByLogin(authentication.getName());
-        GameRoom room = roomService.createRoom(user);
-        model.addAttribute("room", room);
-
-        return "redirect:app/main";
     }
 }

@@ -50,4 +50,9 @@ public class GameRoomServiceImpl implements GameRoomService {
     public void deleteGameRoomAfterBattle(GameRoom room) {
         repository.delete(room);
     }
+
+    @Override
+    public GameRoom findById(Long id) {
+        return repository.getById(id);
+    }
 }
