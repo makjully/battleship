@@ -25,7 +25,7 @@ public class GameRoomsController {
 
     @GetMapping({"/", "/app"})
     public RedirectView index() {
-        return new RedirectView("app/main");
+        return new RedirectView("app/rooms");
     }
 
     @GetMapping("app/rooms")
