@@ -17,6 +17,20 @@ function arrangeShips() {
         }).catch(e => console.log(e));
 }
 
+function loadBoard() {
+    fetch("/api/loadBoard/" + LOGIN)
+        .then(response => response.json())
+        .then(entries => {
+            MY_FIELD.querySelectorAll(".ship")
+                .forEach(cell => cell.classList.remove('ship'));
+            entries.forEach(entry => {
+                const cell = MY_FIELD.querySelector(
+                    `td[data-x="${entry.coordinateX}"][data-y="${entry.coordinateY}"]`);
+                cell.classList.add('ship')
+            });
+        }).catch(e => console.log(e));
+}
+
 function initField() {
     OPPONENT_FIELD.querySelectorAll("td")
         .forEach(cell => cell.addEventListener("click", event => {

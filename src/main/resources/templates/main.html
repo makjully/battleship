@@ -51,9 +51,12 @@
         <div class="col-md-6 d-flex justify-content-center">
             <table id="opponent_board">
                 <caption style="caption-side:top; text-align: center; font-size: large"
-                         th:text="${room.accepting != null} ?
-                         (${room.inviter.equals(user)} ? ${room.inviter.login} : ${room.accepting.login})
-                         : unknown"></caption>
+                         th:if="${room.accepting != null}"
+                         th:text="*{room.inviter.equals(user)} ? ${room.accepting.login} : ${room.inviter.login}">
+                </caption>
+                <caption style="caption-side:top; text-align: center; font-size: large"
+                         th:if="${room.accepting == null}"
+                         th:text="unknown"></caption>
                 <th:block th:each="i: ${#numbers.sequence(0, 9)}">
                     <tr>
                         <th:block th:each="j: ${#numbers.sequence(0, 9)}">
@@ -66,7 +69,7 @@
     </div>
     <div class="form-row text-center" style="margin-top: 45px">
         <div class="col-12">
-            <span id="message">message</span>
+            <span id="message">...</span>
         </div>
     </div>
     <div class="form-row text-center" style="margin-top: 45px">
@@ -78,14 +81,23 @@
     </div>
     <div class="form-row text-center" style="margin-top: 15px">
         <div class="col-12">
-            <button type="submit" class="btn btn-outline-dark" style="width: 300px">Ready to play</button>
+            <form action="/app/game/ready" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <input type="hidden" name="id" th:value="${room.id}"/>
+                <button type="submit" class="btn btn-outline-dark" style="width: 300px">Ready to play</button>
+            </form>
         </div>
     </div>
     <div class="form-row text-center" style="margin-top: 15px">
         <div class="col-12">
-            <button disabled type="submit" class="btn btn-dark" style="width: 300px"
-                    th:if="${room.inviter.equals(user)}">Start game
-            </button>
+            <form action="/app/game/start" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <input type="hidden" name="id" th:value="${room.id}"/>
+                <button disabled type="submit" class="btn btn-dark" style="width: 300px"
+                        th:if="${room.inviter.equals(user)}">
+                    Start game
+                </button>
+            </form>
         </div>
     </div>
 </div>
