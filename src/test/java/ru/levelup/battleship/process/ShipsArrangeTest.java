@@ -3,7 +3,6 @@ package ru.levelup.battleship.process;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -21,11 +20,9 @@ import java.util.List;
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class ShipsArrangeTest {
 
-    @Autowired
-    private ShipsArrange shipsArrange;
-
     @Test
     public void arrangeShips() {
+        ShipsArrange shipsArrange = new ShipsArrange();
         List<Ship> ships = shipsArrange.getArrangedShips();
 
         for (Ship ship : ships) {

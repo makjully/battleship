@@ -1,6 +1,5 @@
 package ru.levelup.battleship.process;
 
-import org.springframework.stereotype.Component;
 import ru.levelup.battleship.model.Cell;
 import ru.levelup.battleship.model.Ship;
 
@@ -8,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-@Component
 public class ShipsArrange {
 
     private final int[][] tempBoard;

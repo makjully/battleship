@@ -15,11 +15,14 @@ import java.util.List;
 @AllArgsConstructor
 public class ShipsArrangeServiceImpl implements ShipsArrangeService {
 
-    private ShipsArrange board;
     private ShipService shipService;
 
     @Override
     public List<Cell> arrangeShips(User user) {
+        if (shipService.countShipsByPlayer(user) != 0)
+            shipService.deleteAll(user);
+
+        ShipsArrange board = new ShipsArrange();
         List<Cell> cells = new ArrayList<>();
 
         board.getArrangedShips().forEach(ship -> {
