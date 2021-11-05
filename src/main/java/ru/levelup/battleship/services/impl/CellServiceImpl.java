@@ -9,6 +9,8 @@ import ru.levelup.battleship.model.Ship;
 import ru.levelup.battleship.model.User;
 import ru.levelup.battleship.services.CellService;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class CellServiceImpl implements CellService {
@@ -29,5 +31,10 @@ public class CellServiceImpl implements CellService {
     @Override
     public Cell findCell(User user, int x, int y) {
         return repository.findCell(user, x, y);
+    }
+
+    @Override
+    public List<Cell> findAll(User user) {
+        return repository.findAll(user);
     }
 }
