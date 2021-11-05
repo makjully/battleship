@@ -14,4 +14,6 @@ public interface GameService {
     long countGamesByWinner(User user);
 
     long countAllGamesByUser(User user);
+
+    Game findGameById(Long id);
 }

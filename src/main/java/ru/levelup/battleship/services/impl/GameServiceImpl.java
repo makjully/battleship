@@ -41,4 +41,9 @@ public class GameServiceImpl implements GameService {
     public long countAllGamesByUser(User user) {
         return repository.countGamesByUser(user);
     }
+
+    @Override
+    public Game findGameById(Long id) {
+        return repository.getById(id);
+    }
 }
