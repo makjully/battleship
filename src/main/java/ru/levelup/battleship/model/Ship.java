@@ -25,7 +25,7 @@ public class Ship {
     @JoinColumn(name = "user_id")
     private User player;
 
-    @OneToMany(mappedBy = "ship", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "ship", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Cell> location;
 
     public Ship (List<Cell> location) {

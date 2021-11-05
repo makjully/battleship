@@ -12,4 +12,6 @@ public interface ShipsRepository extends JpaRepository<Ship, Long> {
     }
 
     long countShipsByPlayer(User player);
+
+    void deleteAllByPlayer(User user);
 }

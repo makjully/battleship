@@ -8,6 +8,8 @@ import ru.levelup.battleship.model.Ship;
 import ru.levelup.battleship.model.User;
 import ru.levelup.battleship.services.ShipService;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class ShipServiceImpl implements ShipService {
@@ -29,5 +31,11 @@ public class ShipServiceImpl implements ShipService {
     @Transactional(rollbackFor = Exception.class)
     public void deleteShip(Ship ship) {
         repository.delete(ship);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteAll(User user) {
+        repository.deleteAllByPlayer(user);
     }
 }
