@@ -11,3 +11,11 @@ td {
     background-color: #343a40;
     border-color: #343a40;
 }
+
+.hit {
+    td-background-image: "images/dot.svg";
+}
+
+.miss {
+    td-background-image: "images/x-lg.svg";
+}
