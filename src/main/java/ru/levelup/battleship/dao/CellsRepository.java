@@ -17,6 +17,6 @@ public interface CellsRepository extends JpaRepository<Cell, Long> {
 
     long countCellsByShip(Ship ship);
 
-    @Query("from Cell cl where cl.ship.id = (select s.id from Ship s where s.player = :user)")
+    @Query("from Cell cl where cl.ship.id in (select s.id from Ship s where s.player = :user)")
     List<Cell> findAll(@Param("user") User user);
 }
