@@ -1,7 +1,6 @@
 package ru.levelup.battleship.controllers;
 
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,29 +21,6 @@ public class GameController {
     private GameService gameService;
     private RoomService roomService;
     private ShipService shipService;
-
-    @PostMapping("app/game/ready")
-    public RedirectView readyToPlay(@RequestParam("room_id") Long roomId,
-                                    Authentication authentication) {
-        User user = userService.findByLogin(authentication.getName());
-        userService.updateWhenBoardPrepared(user);
-
-        return new RedirectView("/app/main/" + roomId);
-    }
-
-    @PostMapping("app/game/start")
-    public RedirectView startGame(@RequestParam("room_id") Long roomId) {
-        Room room = roomService.findById(roomId);
-
-        User user_1 = room.getInviter();
-        User user_2 = room.getAccepting();
-
-        Game game = gameService.createGame(user_1, user_2);
-        room.setGame(game);
-        roomService.updateRoom(room);
-
-        return new RedirectView("/app/main/" + roomId);
-    }
 
     @PostMapping("app/game/exit")
     public RedirectView exitGame(@RequestParam("room_id") Long room_id) {
