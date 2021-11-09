@@ -11,7 +11,7 @@ import javax.validation.constraints.Pattern;
 @Setter
 @EqualsAndHashCode
 @PasswordsMatch
-public class SignUpForm {
+public class SignupForm {
 
     @Pattern(regexp = "[a-zA-Z0-9]{4,10}", message = "Login must contain 4-10 characters: letters and/or numbers")
     private String login;
