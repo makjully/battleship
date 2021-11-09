@@ -6,9 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 @Entity
 @Table(name = "rooms")
@@ -16,7 +14,7 @@ import java.time.ZoneId;
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class GameRoom {
+public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rooms_id_seq")
     @SequenceGenerator(name = "rooms_id_seq", allocationSize = 1)
@@ -29,10 +27,13 @@ public class GameRoom {
     @ManyToOne
     private User accepting;
 
+    @OneToOne
+    private Game game;
+
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
-    public GameRoom(User inviter) {
+    public Room(User inviter) {
         this.inviter = inviter;
         this.timestamp = LocalDateTime.now();
     }
