@@ -17,6 +17,7 @@ import ru.levelup.battleship.model.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -80,5 +81,13 @@ public class CellsRepositoryTest {
 
         found = cellsRepository.findCell(player, 5, 5);
         Assert.assertNull(found);
+    }
+
+    @Test
+    public void findCellsByUser() {
+        List<Cell> found = cellsRepository.findAll(player);
+
+        Assert.assertEquals(cell_2_3, found.get(0));
+        Assert.assertEquals(3, found.size());
     }
 }
