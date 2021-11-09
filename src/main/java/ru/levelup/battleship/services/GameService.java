@@ -11,9 +11,7 @@ public interface GameService {
 
     Game updateGame(Game game, User playerToMove);
 
-    long countGamesByWinner(User user);
-
-    long countAllGamesByUser(User user);
-
     Game findGameById(Long id);
+
+    void deleteUnfinishedGame(Game game);
 }

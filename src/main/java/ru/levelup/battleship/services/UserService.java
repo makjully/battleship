@@ -11,4 +11,6 @@ public interface UserService {
     void updateWhenBoardPrepared(User user);
 
     User findByLogin(String login);
+
+    User update(User user);
 }

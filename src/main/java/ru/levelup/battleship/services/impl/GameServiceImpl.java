@@ -33,17 +33,13 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public long countGamesByWinner(User user) {
-        return repository.countGamesByWinner(user);
-    }
-
-    @Override
-    public long countAllGamesByUser(User user) {
-        return repository.countGamesByUser(user);
-    }
-
-    @Override
     public Game findGameById(Long id) {
         return repository.getById(id);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteUnfinishedGame(Game game) {
+        repository.delete(game);
     }
 }

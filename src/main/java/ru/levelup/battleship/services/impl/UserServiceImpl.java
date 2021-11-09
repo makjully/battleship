@@ -35,4 +35,10 @@ public class UserServiceImpl implements UserService {
     public User findByLogin(String login) {
         return repository.findByLogin(login);
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public User update(User user) {
+        return repository.save(user);
+    }
 }
