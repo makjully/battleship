@@ -1,7 +1,13 @@
 "use strict";
 const MESSAGE = document.querySelector("#message");
 const OPPONENT_FIELD = document.querySelector("#opponent_board");
+const OPPONENT_USERNAME = OPPONENT_FIELD.querySelector("caption");
 const MY_FIELD = document.querySelector("#my_board");
+const MY_USERNAME = MY_FIELD.querySelector("caption");
+let isMyTurn = false;
+const READY_BUTTON = document.querySelector("#ready_button");
+const ARRANGE_BUTTON = document.querySelector("#arrange_button");
+const START_BUTTON = document.querySelector("#start_button");
 
 function arrangeShips() {
     fetch("/api/arrange/" + LOGIN)
@@ -15,14 +21,14 @@ function arrangeShips() {
                 cell.classList.add('ship')
             });
         }).catch(e => console.log(e));
+
+    READY_BUTTON.disabled = false;
 }
 
 function loadBoard() {
     fetch("/api/loadBoard/" + LOGIN)
         .then(response => response.json())
         .then(entries => {
-            MY_FIELD.querySelectorAll(".ship")
-                .forEach(cell => cell.classList.remove('ship'));
             entries.forEach(entry => {
                 const cell = MY_FIELD.querySelector(
                     `td[data-x="${entry.coordinateX}"][data-y="${entry.coordinateY}"]`);
@@ -33,13 +39,28 @@ function loadBoard() {
 
 function initField() {
     OPPONENT_FIELD.querySelectorAll("td")
-        .forEach(cell => cell.addEventListener("click", event => {
-                const target = {
-                    x: event.target.dataset.x,
-                    y: event.target.dataset.y
-                };
-                console.log(target);
-                event.target.style.backgroundColor = "red";
-            }
-        ));
+        .forEach(cell => cell.addEventListener("click", onCellClick));
 }
+
+function onCellClick(event) {
+    if(isMyTurn) {
+        const target = {
+            x: event.target.dataset.x,
+            y: event.target.dataset.y,
+            username: OPPONENT_USERNAME.innerText
+        };
+        console.log(target);
+        sendHit(target);
+        event.target.removeEventListener("click", onCellClick);
+    }
+}
+
+function setReadyStatus() {
+    sendReady(true);
+    ARRANGE_BUTTON.disabled = true;
+}
+
+window.addEventListener("load", function () {
+    loadBoard();
+    initField();
+});

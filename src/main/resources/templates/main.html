@@ -106,39 +106,28 @@
     </div>
     <div class="form-row text-center" style="margin-top: 45px">
         <div class="col-12">
-            <span id="message">...</span>
+            <span id="hitMessage">...</span>
         </div>
     </div>
     <div class="form-row text-center" style="margin-top: 45px">
         <div class="col-12">
-            <input type="hidden" name="isArranged" th:value="*{isArranged}"/>
-            <button th:disabled="${user.isPlayerFieldArranged()}" class="btn btn-outline-dark" style="width: 300px"
-                    onclick="arrangeShips()">
+            <button id="arrange_button" class="btn btn-outline-dark" style="width: 300px" onclick="arrangeShips()">
                 Arrange ships
             </button>
         </div>
     </div>
     <div class="form-row text-center" style="margin-top: 15px">
         <div class="col-12">
-            <form action="/app/game/ready" method="post">
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                <input type="hidden" name="room_id" th:value="${room.id}"/>
-                <button th:disabled="*{!isArranged}" type="submit" class="btn btn-outline-dark"
-                        style="width: 300px">Ready to play
-                </button>
-            </form>
+            <button id="ready_button" class="btn btn-outline-dark"
+                    style="width: 300px" onclick="setReadyStatus()" disabled>Ready to play
+            </button>
         </div>
     </div>
     <div class="form-row text-center" style="margin-top: 15px">
         <div class="col-12">
-            <form action="/app/game/start" method="post" th:if="${room.inviter.equals(user) && room.accepting != null}">
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                <input type="hidden" name="room_id" th:value="${room.id}"/>
-                <button th:disabled="${!room.inviter.isPlayerFieldArranged() || !room.accepting.isPlayerFieldArranged()}"
-                        type="submit" class="btn btn-dark" style="width: 300px">
+                <button id="start_button" th:if="${room.inviter.equals(user)}" class="btn btn-dark" style="width: 300px" disabled>
                     Start game
                 </button>
-            </form>
         </div>
     </div>
 </div>

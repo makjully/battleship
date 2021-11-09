@@ -13,9 +13,15 @@ td {
 }
 
 .hit {
-    td-background-image: "images/dot.svg";
+    background-image: url("./images/dot.svg");
+    background-size: cover;
 }
 
 .miss {
-    td-background-image: "images/x-lg.svg";
+    background-image: url("./images/x-lg.svg");
+    background-size: cover;
+}
+
+caption.ready::after{
+    content: url("./images/check.svg");
 }
