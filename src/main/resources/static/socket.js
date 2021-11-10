@@ -34,7 +34,6 @@ function sendReady(isReady) {
     stompClient.send("/app/ready/" + ROOM, {}, JSON.stringify(message));
 }
 
-
 function sendStartGame() {
     stompClient.send("/app/start/" + ROOM, {});
 }

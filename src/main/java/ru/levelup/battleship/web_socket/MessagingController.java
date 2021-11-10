@@ -1,11 +1,11 @@
 package ru.levelup.battleship.web_socket;
 
 import lombok.AllArgsConstructor;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import ru.levelup.battleship.model.Game;
 import ru.levelup.battleship.model.Room;
 import ru.levelup.battleship.model.User;
@@ -32,7 +32,7 @@ public class MessagingController {
     private static final double POINTS = 10.5;
 
     @MessageMapping("/hit/{id}")
-    public void getMessages(@PathVariable("id") Long roomId,
+    public void getMessages(@DestinationVariable("id") Long roomId,
                             @Payload HitMessage hitMessage) {
         String toMove;
         Room room = roomService.findById(roomId);
@@ -54,7 +54,7 @@ public class MessagingController {
     }
 
     @MessageMapping("/ready/{id}")
-    public void setReadyStatus(@PathVariable("id") Long roomId,
+    public void setReadyStatus(@DestinationVariable("id") Long roomId,
                                @Payload ReadyMessage readyMessage) {
         User user = userService.findByLogin(readyMessage.getLogin());
         userService.updateWhenBoardPrepared(user);
@@ -63,7 +63,7 @@ public class MessagingController {
     }
 
     @MessageMapping("/start/{id}")
-    public void setReadyStatus(@PathVariable("id") Long roomId) {
+    public void setReadyStatus(@DestinationVariable("id") Long roomId) {
         Room room = roomService.findById(roomId);
 
         User user_1 = room.getInviter();
