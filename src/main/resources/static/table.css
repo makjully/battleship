@@ -22,6 +22,30 @@ td {
     background-size: cover;
 }
 
-caption.ready::after{
+caption {
+    height: calc(30px + 1.5rem);
+}
+
+caption::after {
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+    position: absolute;
+    top: -0.5px;
+}
+
+caption.ready::after {
     content: url("./images/check.svg");
+}
+
+caption.highlight {
+    font-weight: 500;
+}
+
+caption.highlight::before {
+    content: url("./images/arrow-right.svg");
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+    position: absolute;
 }

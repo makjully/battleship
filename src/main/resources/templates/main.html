@@ -24,11 +24,11 @@
         </a>
     </div>
     <div class="navbar-collapse collapse justify-content-stretch" id="navbar7" aria-controls="navbar7">
-        <ul class="navbar-nav ml-3" th:if="${room.accepting != null}">
+        <ul class="navbar-nav ml-3">
             <li class="nav-item">
                 <a class="nav-link">
-                    play&nbsp;vs&nbsp;<span
-                        th:text="*{room.accepting.equals(user)} ? ${room.inviter.login} : ${room.accepting.login}">
+                    play&nbsp;vs&nbsp;<span id="opponent_info"
+                                            th:text="*{room.accepting != null && room.accepting.equals(user)} ? ${room.inviter.login} : unknown">
                 </span>
                 </a>
             </li>
@@ -89,6 +89,7 @@
             <table id="opponent_board">
                 <caption style="caption-side:top; text-align: center; font-size: large"
                          th:if="${room.accepting != null}"
+                         th:classappend="${room.inviter.isPlayerFieldArranged()} ? 'ready'"
                          th:text="*{room.inviter.equals(user)} ? ${room.accepting.login} : ${room.inviter.login}">
                 </caption>
                 <caption style="caption-side:top; text-align: center; font-size: large"
@@ -106,28 +107,29 @@
     </div>
     <div class="form-row text-center" style="margin-top: 45px">
         <div class="col-12">
-            <span id="hitMessage">...</span>
+            <span id="moveMessage"></span>
         </div>
     </div>
     <div class="form-row text-center" style="margin-top: 45px">
         <div class="col-12">
-            <button id="arrange_button" class="btn btn-outline-dark" style="width: 300px" onclick="arrangeShips()">
-                Arrange ships
+            <button id="arrange_button" class="btn btn-outline-dark"
+                    style="width: 300px">Arrange ships
             </button>
         </div>
     </div>
     <div class="form-row text-center" style="margin-top: 15px">
         <div class="col-12">
             <button id="ready_button" class="btn btn-outline-dark"
-                    style="width: 300px" onclick="setReadyStatus()" disabled>Ready to play
+                    style="width: 300px" disabled>Ready to play
             </button>
         </div>
     </div>
     <div class="form-row text-center" style="margin-top: 15px">
         <div class="col-12">
-                <button id="start_button" th:if="${room.inviter.equals(user)}" class="btn btn-dark" style="width: 300px" disabled>
-                    Start game
-                </button>
+            <button id="start_button" th:if="${room.inviter.equals(user)}" class="btn btn-dark" style="width: 300px"
+                    disabled>
+                Start game
+            </button>
         </div>
     </div>
 </div>

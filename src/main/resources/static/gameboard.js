@@ -1,10 +1,11 @@
 "use strict";
+let isMyTurn = false;
 const MESSAGE = document.querySelector("#message");
 const OPPONENT_FIELD = document.querySelector("#opponent_board");
 const OPPONENT_USERNAME = OPPONENT_FIELD.querySelector("caption");
 const MY_FIELD = document.querySelector("#my_board");
 const MY_USERNAME = MY_FIELD.querySelector("caption");
-let isMyTurn = false;
+const OPPONENT_INFO = document.querySelector("#opponent_info");
 const READY_BUTTON = document.querySelector("#ready_button");
 const ARRANGE_BUTTON = document.querySelector("#arrange_button");
 const START_BUTTON = document.querySelector("#start_button");
@@ -43,7 +44,7 @@ function initField() {
 }
 
 function onCellClick(event) {
-    if(isMyTurn) {
+    if (isMyTurn) {
         const target = {
             x: event.target.dataset.x,
             y: event.target.dataset.y,
@@ -60,7 +61,25 @@ function setReadyStatus() {
     ARRANGE_BUTTON.disabled = true;
 }
 
+function highlightUserToMove() {
+    const caption = isMyTurn ? MY_USERNAME : OPPONENT_USERNAME;
+    caption.classList.add("highlight");
+}
+
 window.addEventListener("load", function () {
     loadBoard();
     initField();
+    connect();
+});
+
+ARRANGE_BUTTON.addEventListener("click", function () {
+    arrangeShips();
+});
+
+READY_BUTTON.addEventListener("click", function () {
+    setReadyStatus();
+});
+
+START_BUTTON.addEventListener("click", function () {
+    sendStartGame();
 });
