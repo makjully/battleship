@@ -21,10 +21,10 @@ public class Room {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     private User inviter;
 
-    @ManyToOne
+    @OneToOne
     private User accepting;
 
     @OneToOne

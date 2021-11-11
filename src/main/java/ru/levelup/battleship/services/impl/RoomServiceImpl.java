@@ -8,12 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.levelup.battleship.dao.RoomRepository;
 import ru.levelup.battleship.model.Room;
 import ru.levelup.battleship.model.User;
-import ru.levelup.battleship.services.GameService;
 import ru.levelup.battleship.services.RoomService;
-import ru.levelup.battleship.services.ShipService;
-import ru.levelup.battleship.services.UserService;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -44,19 +42,15 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Room findGameRoomByInviter(User inviter) {
-        return roomRepository.findGameRoomByInviter(inviter);
-    }
-
-    @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteGameRoom(Room room) {
         roomRepository.delete(room);
     }
 
     @Override
-    public Room findById(Long id) {
-        return roomRepository.getById(id);
+    @Transactional
+    public Optional<Room> findById(Long id) {
+        return roomRepository.findById(id);
     }
 
     @Override

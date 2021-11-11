@@ -6,6 +6,7 @@ import ru.levelup.battleship.model.Room;
 import ru.levelup.battleship.model.User;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public interface RoomService {
 
@@ -17,11 +18,9 @@ public interface RoomService {
 
     Room updateRoomWhenAccept(Room room, User accepting);
 
-    Room findGameRoomByInviter(User inviter);
-
     void deleteGameRoom(Room room);
 
-    Room findById(Long id);
+    Optional<Room> findById(Long id);
 
     Room updateRoom(Room room);
 }
