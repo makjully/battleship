@@ -13,6 +13,8 @@ import ru.levelup.battleship.services.RoomService;
 import ru.levelup.battleship.services.ShipService;
 import ru.levelup.battleship.services.UserService;
 
+import java.util.NoSuchElementException;
+
 @Controller
 @AllArgsConstructor
 public class GameController {
@@ -24,7 +26,7 @@ public class GameController {
 
     @PostMapping("app/game/exit")
     public RedirectView exitGame(@RequestParam("room_id") Long room_id) {
-        Room room = roomService.findById(room_id);
+        Room room = roomService.findById(room_id).orElseThrow(NoSuchElementException::new);
 
         if (room.getGame() != null) {
             Game game = gameService.findGameById(room.getGame().getId());

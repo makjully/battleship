@@ -11,6 +11,8 @@ import ru.levelup.battleship.model.User;
 import ru.levelup.battleship.services.RoomService;
 import ru.levelup.battleship.services.UserService;
 
+import java.util.NoSuchElementException;
+
 @Controller
 @AllArgsConstructor
 public class MainPageController {
@@ -21,15 +23,12 @@ public class MainPageController {
     @GetMapping("app/main/{room_id}")
     public String showMain(Model model,
                            @PathVariable("room_id") Long roomId,
-                           @RequestParam(defaultValue = "false", name = "isArranged") boolean isArranged,
                            Authentication authentication) {
         User user = userService.findByLogin(authentication.getName());
         model.addAttribute("user", user);
 
-        Room room = roomService.findById(roomId);
+        Room room = roomService.findById(roomId).orElseThrow(NoSuchElementException::new);
         model.addAttribute("room", room);
-
-        model.addAttribute("isArranged", isArranged);
 
         return "main";
     }
@@ -38,7 +37,7 @@ public class MainPageController {
     public RedirectView joinRoom(@RequestParam("id") Long roomId,
                                  Authentication authentication) {
         User user = userService.findByLogin(authentication.getName());
-        Room room = roomService.findById(roomId);
+        Room room = roomService.findById(roomId).orElseThrow(NoSuchElementException::new);
 
         if (room != null && room.getAccepting() == null) {
             roomService.updateRoomWhenAccept(room, user);
