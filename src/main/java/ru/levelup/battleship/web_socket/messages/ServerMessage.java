@@ -1,4 +1,4 @@
-package ru.levelup.battleship.web_socket.model;
+package ru.levelup.battleship.web_socket.messages;
 
 import lombok.AllArgsConstructor;
 

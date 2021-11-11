@@ -1,4 +1,4 @@
-package ru.levelup.battleship.web_socket.model;
+package ru.levelup.battleship.web_socket.messages;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

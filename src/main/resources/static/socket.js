@@ -2,7 +2,7 @@ const socket = new SockJS("http://localhost:8080/ws");
 const stompClient = Stomp.over(socket);
 
 function connect() {
-    stompClient.connect({}, onConnected, onError);
+    stompClient.connect({login: LOGIN, room: ROOM}, onConnected, onError);
 }
 
 function onConnected() {
@@ -28,7 +28,7 @@ function sendHit(msg) {
 function sendReady(isReady) {
     const message = {
         login: LOGIN,
-        isReady
+        ready: isReady,
     };
 
     stompClient.send("/app/ready/" + ROOM, {}, JSON.stringify(message));
@@ -61,15 +61,20 @@ function handleMove(response) {
     } else {
         isMyTurn = response.userToMove === LOGIN;
     }
+
+    highlightUserToMove();
 }
 
 function onMessageReceived(msg) {
     const response = JSON.parse(msg.body);
 
+    // when move
     if (response.hasOwnProperty("target") && response.target !== null) {
         handleMove(response);
     }
-    if (response.hasOwnProperty("isReady")) {
+
+    // when ready
+    if (response.hasOwnProperty("ready")) {
         const caption = response.login === LOGIN ? MY_USERNAME : OPPONENT_USERNAME;
         caption.classList.add("ready");
 
@@ -78,8 +83,22 @@ function onMessageReceived(msg) {
         }
     }
 
+    // when join
+    if (response.hasOwnProperty("joined")) {
+        if (response.login !== LOGIN) {
+            OPPONENT_INFO.innerText = response.login;
+            OPPONENT_USERNAME.innerText = response.login;
+        }
+    }
+
+    // when game started
     if (response.hasOwnProperty("userToMove") && response.target === null) {
         isMyTurn = response.userToMove === LOGIN;
+
+        MY_USERNAME.classList.remove("ready");
+        OPPONENT_USERNAME.classList.remove("ready");
+
+        highlightUserToMove();
 
         ARRANGE_BUTTON.style.visibility = "hidden";
         READY_BUTTON.style.visibility = "hidden";

@@ -25,12 +25,12 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
                 .withSockJS();
     }
 
-    @Bean
-    public MappingJackson2MessageConverter mappingJackson2MessageConverter(ObjectMapper objectMapper) {
-        MappingJackson2MessageConverter jacksonMessageConverter = new MappingJackson2MessageConverter();
-        jacksonMessageConverter.setObjectMapper(objectMapper);
-        jacksonMessageConverter.setSerializedPayloadClass(String.class);
-        jacksonMessageConverter.setStrictContentTypeMatch(true);
-        return jacksonMessageConverter;
-    }
+//    @Bean
+//    public MappingJackson2MessageConverter mappingJackson2MessageConverter(ObjectMapper objectMapper) {
+//        MappingJackson2MessageConverter jacksonMessageConverter = new MappingJackson2MessageConverter();
+//        jacksonMessageConverter.setObjectMapper(objectMapper);
+//        jacksonMessageConverter.setSerializedPayloadClass(String.class);
+//        jacksonMessageConverter.setStrictContentTypeMatch(true);
+//        return jacksonMessageConverter;
+//    }
 }

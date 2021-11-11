@@ -1,4 +1,4 @@
-package ru.levelup.battleship.web_socket.model;
+package ru.levelup.battleship.web_socket.messages;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -17,5 +17,5 @@ public class ReadyMessage {
    private String login;
 
    @JsonProperty
-   private boolean isReady;
+   private boolean ready;
 }

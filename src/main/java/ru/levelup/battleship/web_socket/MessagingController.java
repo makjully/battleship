@@ -14,10 +14,11 @@ import ru.levelup.battleship.services.BattleService;
 import ru.levelup.battleship.services.GameService;
 import ru.levelup.battleship.services.RoomService;
 import ru.levelup.battleship.services.UserService;
-import ru.levelup.battleship.web_socket.model.HitMessage;
-import ru.levelup.battleship.web_socket.model.ReadyMessage;
-import ru.levelup.battleship.web_socket.model.ServerMessage;
+import ru.levelup.battleship.web_socket.messages.MoveMessage;
+import ru.levelup.battleship.web_socket.messages.ReadyMessage;
+import ru.levelup.battleship.web_socket.messages.ServerMessage;
 
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 @Controller
@@ -33,13 +34,13 @@ public class MessagingController {
 
     @MessageMapping("/hit/{id}")
     public void getMessages(@DestinationVariable("id") Long roomId,
-                            @Payload HitMessage hitMessage) {
+                            @Payload MoveMessage moveMessage) {
         String toMove;
-        Room room = roomService.findById(roomId);
-        User user = userService.findByLogin(hitMessage.getLogin());
+        Room room = roomService.findById(roomId).orElseThrow(NoSuchElementException::new);
+        User user = userService.findByLogin(moveMessage.getLogin());
         User opponent = Objects.equals(user, room.getInviter()) ? room.getAccepting() : room.getInviter();
 
-        Result result = battleService.hit(opponent, hitMessage.getTarget().getX(), hitMessage.getTarget().getY());
+        Result result = battleService.hit(opponent, moveMessage.getTarget().getX(), moveMessage.getTarget().getY());
 
         if (result.equals(Result.WIN)) {
             gameService.endGame(room.getGame(), true, user);
@@ -48,14 +49,14 @@ public class MessagingController {
         } else {
             toMove = result.equals(Result.MISS) ? opponent.getLogin() : user.getLogin();
         }
-        ServerMessage response = new ServerMessage(toMove, hitMessage.getTarget(), result.name());
+        ServerMessage response = new ServerMessage(toMove, moveMessage.getTarget(), result.name());
 
         messagingTemplate.convertAndSend("/room/" + roomId, response);
     }
 
     @MessageMapping("/ready/{id}")
-    public void setReadyStatus(@DestinationVariable("id") Long roomId,
-                               @Payload ReadyMessage readyMessage) {
+    public void setReady(@DestinationVariable("id") Long roomId,
+                         @Payload ReadyMessage readyMessage) {
         User user = userService.findByLogin(readyMessage.getLogin());
         userService.updateWhenBoardPrepared(user);
 
@@ -63,8 +64,8 @@ public class MessagingController {
     }
 
     @MessageMapping("/start/{id}")
-    public void setReadyStatus(@DestinationVariable("id") Long roomId) {
-        Room room = roomService.findById(roomId);
+    public void startGame(@DestinationVariable("id") Long roomId) {
+        Room room = roomService.findById(roomId).orElseThrow(NoSuchElementException::new);
 
         User user_1 = room.getInviter();
         User user_2 = room.getAccepting();
