@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface CellsRepository extends JpaRepository<Cell, Long> {
 
-    @Query("from Cell cl where cl.coordinateX = :x and cl.coordinateY = :y and cl.ship.id = " +
+    @Query("from Cell cl where cl.coordinateX = :x and cl.coordinateY = :y and cl.ship.id in " +
             "(select s.id from Ship s where s.player = :user)")
     Cell findCell(@Param("user") User user, int x, int y);
 
