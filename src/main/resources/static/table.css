@@ -13,12 +13,12 @@ td {
 }
 
 .hit {
-    background-image: url("./images/dot.svg");
+    background-image: url("./images/x-lg.svg");
     background-size: cover;
 }
 
 .miss {
-    background-image: url("./images/x-lg.svg");
+    background-image: url("./images/dot.svg");
     background-size: cover;
 }
 
@@ -39,13 +39,14 @@ caption.ready::after {
 }
 
 caption.highlight {
-    font-weight: 500;
+    font-weight: 600;
+    color: #343a40;
 }
 
 caption.highlight::before {
     content: url("./images/arrow-right.svg");
     display: inline-block;
-    height: 30px;
-    width: 30px;
-    position: absolute;
+    height: 20px;
+    width: 20px;
+    margin-right: 7px;
 }

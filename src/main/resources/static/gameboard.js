@@ -1,6 +1,6 @@
 "use strict";
 let isMyTurn = false;
-const MESSAGE = document.querySelector("#message");
+const MESSAGE = document.querySelector("#moveMessage");
 const OPPONENT_FIELD = document.querySelector("#opponent_board");
 const OPPONENT_USERNAME = OPPONENT_FIELD.querySelector("caption");
 const MY_FIELD = document.querySelector("#my_board");
@@ -62,6 +62,8 @@ function setReadyStatus() {
 }
 
 function highlightUserToMove() {
+    MY_USERNAME.classList.remove("highlight");
+    OPPONENT_USERNAME.classList.remove("highlight");
     const caption = isMyTurn ? MY_USERNAME : OPPONENT_USERNAME;
     caption.classList.add("highlight");
 }

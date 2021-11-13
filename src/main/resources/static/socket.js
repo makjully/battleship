@@ -2,7 +2,7 @@ const socket = new SockJS("http://localhost:8080/ws");
 const stompClient = Stomp.over(socket);
 
 function connect() {
-    stompClient.connect({login: LOGIN, room: ROOM}, onConnected, onError);
+    stompClient.connect({room: ROOM}, onConnected, onError);
 }
 
 function onConnected() {
@@ -18,7 +18,7 @@ function sendHit(msg) {
     if (msg) {
         const message = {
             login: LOGIN,
-            content: msg,
+            target: msg,
         };
 
         stompClient.send("/app/hit/" + ROOM, {}, JSON.stringify(message));
@@ -48,10 +48,12 @@ function handleMove(response) {
 
     if (response.result === "Hit" || response.result === "Win") {
         cell.classList.add("hit");
+        MESSAGE.innerText = "Hit!";
     }
 
     if (response.result === "Miss") {
         cell.classList.add("miss");
+        MESSAGE.innerText = "Miss";
     }
 
     if (response.result === "Win") {
@@ -77,6 +79,7 @@ function onMessageReceived(msg) {
     if (response.hasOwnProperty("ready")) {
         const caption = response.login === LOGIN ? MY_USERNAME : OPPONENT_USERNAME;
         caption.classList.add("ready");
+        READY_BUTTON.disabled = true;
 
         if (MY_USERNAME.classList.contains("ready") && OPPONENT_USERNAME.classList.contains("ready") && START_BUTTON) {
             START_BUTTON.disabled = false;
