@@ -30,7 +30,7 @@ public class MessagingController {
     private UserService userService;
     private GameService gameService;
     private SimpMessagingTemplate messagingTemplate;
-    private static final double POINTS = 10.5;
+    private static final double POINTS = 7.25;
 
     @MessageMapping("/hit/{id}")
     public void getMessages(@DestinationVariable("id") Long roomId,
@@ -39,6 +39,8 @@ public class MessagingController {
         Room room = roomService.findById(roomId).orElseThrow(NoSuchElementException::new);
         User user = userService.findByLogin(moveMessage.getLogin());
         User opponent = Objects.equals(user, room.getInviter()) ? room.getAccepting() : room.getInviter();
+
+        System.out.println(moveMessage.getTarget().getX() + " " + moveMessage.getTarget().getY() + moveMessage.getTarget().getUsername());
 
         Result result = battleService.hit(opponent, moveMessage.getTarget().getX(), moveMessage.getTarget().getY());
 
@@ -49,7 +51,7 @@ public class MessagingController {
         } else {
             toMove = result.equals(Result.MISS) ? opponent.getLogin() : user.getLogin();
         }
-        ServerMessage response = new ServerMessage(toMove, moveMessage.getTarget(), result.name());
+        ServerMessage response = new ServerMessage(toMove, moveMessage.getTarget(), result.description);
 
         messagingTemplate.convertAndSend("/room/" + roomId, response);
     }
