@@ -12,5 +12,5 @@ public enum Result {
     SINK("Sink"),
     WIN("Win");
 
-    private final String description;
+    public final String description;
 }
