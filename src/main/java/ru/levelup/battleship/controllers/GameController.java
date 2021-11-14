@@ -27,9 +27,12 @@ public class GameController {
     @PostMapping("app/game/exit")
     public RedirectView exitGame(@RequestParam("room_id") Long room_id) {
         Room room = roomService.findById(room_id).orElseThrow(NoSuchElementException::new);
+        Game game = room.getGame();
 
-        if (room.getGame() != null) {
-            Game game = gameService.findGameById(room.getGame().getId());
+        if (game != null && !game.isCompleted()) {
+            game = gameService.findGameById(room.getGame().getId());
+            room.setGame(null);
+            roomService.updateRoom(room);
             gameService.deleteUnfinishedGame(game);
         }
 
