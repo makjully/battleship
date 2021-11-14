@@ -30,12 +30,11 @@ public class BattleServiceImpl implements BattleService {
         if (cellService.countCellsByShip(shipHit) > 0)
             result = Result.HIT;
         else {
+            shipService.deleteShip(shipHit);
             if (shipService.countShipsByPlayer(user) == 0)
                 result = Result.WIN;
-            else {
+            else
                 result = Result.SINK;
-                shipService.deleteShip(shipHit);
-            }
         }
 
         return result;
