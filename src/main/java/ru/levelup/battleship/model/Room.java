@@ -21,7 +21,7 @@ public class Room {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @OneToOne(optional = false)
+    @OneToOne
     private User inviter;
 
     @OneToOne
