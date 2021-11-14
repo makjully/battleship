@@ -39,32 +39,39 @@ function sendStartGame() {
 }
 
 function disconnect() {
-    stompClient.disconnect();
+    stompClient.disconnect({room: ROOM});
 }
 
 function handleMove(response) {
     const field = response.target.username === LOGIN ? MY_FIELD : OPPONENT_FIELD;
     const cell = field.querySelector(`td[data-x="${response.target.x}"][data-y="${response.target.y}"]`);
 
-    if (response.result === "Hit" || response.result === "Win") {
-        cell.classList.add("hit");
-        MESSAGE.innerText = "Hit!";
+    if (response.result !== "Miss") {
+        if (field === MY_FIELD)
+            cell.classList.add("hit_me");
+        else cell.classList.add("hit");
+    } else {
+        cell.classList.add("miss");
+        MESSAGE.innerText = "Miss.. Now is your turn, " + response.userToMove;
     }
 
-    if (response.result === "Miss") {
-        cell.classList.add("miss");
-        MESSAGE.innerText = "Miss";
+    if (response.result === "Hit") {
+        MESSAGE.innerText = "Hit! " + response.userToMove + ", continue to move";
     }
+
+    if (response.result === "Sink") {
+        MESSAGE.innerText = "Sink a ship! " + response.userToMove + ", continue to move";
+    }
+
 
     if (response.result === "Win") {
         isMyTurn = false;
-        MESSAGE.innerText = response.userToMove + " won!";
-        disconnect();
+        MESSAGE.innerText = response.userToMove + ", congrats! You won! Got 7.25 points";
+        //disconnect();
     } else {
         isMyTurn = response.userToMove === LOGIN;
+        highlightUserToMove();
     }
-
-    highlightUserToMove();
 }
 
 function onMessageReceived(msg) {
@@ -101,6 +108,7 @@ function onMessageReceived(msg) {
         MY_USERNAME.classList.remove("ready");
         OPPONENT_USERNAME.classList.remove("ready");
 
+        MESSAGE.innerText = response.userToMove + ", you start the game!";
         highlightUserToMove();
 
         ARRANGE_BUTTON.style.visibility = "hidden";
@@ -108,6 +116,13 @@ function onMessageReceived(msg) {
         if (START_BUTTON) {
             START_BUTTON.style.visibility = "hidden";
         }
+    }
+
+    // when opponent left
+    if (response.hasOwnProperty("disconnected")) {
+        EXIT_ALERT.innerText = response.login + " has left the battle. Please, press 'Exit game' and join another " +
+            "or start your own";
+        EXIT_ALERT.alert();
     }
 }
 
