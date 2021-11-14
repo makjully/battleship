@@ -40,8 +40,6 @@ public class MessagingController {
         User user = userService.findByLogin(moveMessage.getLogin());
         User opponent = Objects.equals(user, room.getInviter()) ? room.getAccepting() : room.getInviter();
 
-        System.out.println(moveMessage.getTarget().getX() + " " + moveMessage.getTarget().getY() + moveMessage.getTarget().getUsername());
-
         Result result = battleService.hit(opponent, moveMessage.getTarget().getX(), moveMessage.getTarget().getY());
 
         if (result.equals(Result.WIN)) {
@@ -51,9 +49,9 @@ public class MessagingController {
         } else {
             toMove = result.equals(Result.MISS) ? opponent.getLogin() : user.getLogin();
         }
-        ServerMessage response = new ServerMessage(toMove, moveMessage.getTarget(), result.description);
 
-        messagingTemplate.convertAndSend("/room/" + roomId, response);
+        messagingTemplate.convertAndSend("/room/" + roomId,
+                new ServerMessage(toMove, moveMessage.getTarget(), result.description));
     }
 
     @MessageMapping("/ready/{id}")

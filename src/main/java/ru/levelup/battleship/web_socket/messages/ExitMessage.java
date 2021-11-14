@@ -10,10 +10,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class JoinMessage {
+public class ExitMessage {
     @JsonProperty
     private String login;
 
     @JsonProperty
-    private boolean joined;
+    private boolean disconnected;
 }
