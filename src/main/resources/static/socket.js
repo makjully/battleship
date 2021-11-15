@@ -39,7 +39,7 @@ function sendStartGame() {
 }
 
 function disconnect() {
-    stompClient.disconnect({room: ROOM});
+    stompClient.disconnect();
 }
 
 function handleMove(response) {
@@ -120,9 +120,9 @@ function onMessageReceived(msg) {
 
     // when opponent left
     if (response.hasOwnProperty("disconnected")) {
-        EXIT_ALERT.innerText = response.login + " has left the battle. Please, press 'Exit game' and join another " +
+        ALERT.innerText = response.login + " has left the battle. Please, press 'Exit game' and join another " +
             "or start your own";
-        EXIT_ALERT.alert();
+        ALERT.classList.remove("d-none");
     }
 }
 

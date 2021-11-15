@@ -7,9 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.6.0/css/bootstrap.css"/>
     <link rel="stylesheet" th:href="@{/footer.css}" type="text/css">
-    <script th:inline="javascript">
-        var LOGIN = /*[[${user.login}]]*/ "";
-    </script>
+
 </head>
 <body>
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
@@ -96,10 +94,6 @@
 <footer>
     <div th:replace="fragments/footer :: footer"></div>
 </footer>
-
-<script src="/webjars/sockjs-client/sockjs.min.js"></script>
-<script src="/webjars/stomp-websocket/stomp.min.js"></script>
-<script src="/socket.js"></script>
 
 </body>
 </html>

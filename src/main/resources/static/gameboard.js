@@ -9,7 +9,7 @@ const OPPONENT_INFO = document.querySelector("#opponent_info");
 const READY_BUTTON = document.querySelector("#ready_button");
 const ARRANGE_BUTTON = document.querySelector("#arrange_button");
 const START_BUTTON = document.querySelector("#start_button");
-const EXIT_ALERT = document.querySelector(".alert");
+const ALERT = document.querySelector(".alert");
 const CLOSE_BUTTON = document.querySelector("#close_button");
 
 function arrangeShips() {
@@ -74,6 +74,7 @@ window.addEventListener("load", function () {
     loadBoard();
     initField();
     connect();
+    ALERT.classList.add("d-none");
 });
 
 ARRANGE_BUTTON.addEventListener("click", function () {
@@ -84,9 +85,11 @@ READY_BUTTON.addEventListener("click", function () {
     setReadyStatus();
 });
 
-START_BUTTON.addEventListener("click", function () {
-    sendStartGame();
-});
+if (START_BUTTON) {
+    START_BUTTON.addEventListener("click", function () {
+        sendStartGame();
+    });
+}
 
 CLOSE_BUTTON.addEventListener("click", function () {
     disconnect();
