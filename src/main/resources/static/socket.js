@@ -67,7 +67,6 @@ function handleMove(response) {
     if (response.result === "Win") {
         isMyTurn = false;
         MESSAGE.innerText = response.userToMove + ", congrats! You won! Got 7.25 points";
-        //disconnect();
     } else {
         isMyTurn = response.userToMove === LOGIN;
         highlightUserToMove();
