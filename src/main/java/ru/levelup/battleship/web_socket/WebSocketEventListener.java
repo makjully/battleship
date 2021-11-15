@@ -10,10 +10,7 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import ru.levelup.battleship.model.Game;
 import ru.levelup.battleship.model.Room;
 import ru.levelup.battleship.model.User;
-import ru.levelup.battleship.services.GameService;
-import ru.levelup.battleship.services.RoomService;
-import ru.levelup.battleship.services.ShipService;
-import ru.levelup.battleship.services.UserService;
+import ru.levelup.battleship.services.*;
 import ru.levelup.battleship.web_socket.messages.ExitMessage;
 import ru.levelup.battleship.web_socket.messages.JoinMessage;
 
@@ -24,10 +21,9 @@ import java.util.Objects;
 public class WebSocketEventListener {
 
     private SimpMessagingTemplate messagingTemplate;
+    private RemoveDataService removeDataService;
     private RoomService roomService;
     private UserService userService;
-    private ShipService shipService;
-    private GameService gameService;
 
     @EventListener
     public void handleSessionConnected(SessionConnectEvent event) {
@@ -50,36 +46,7 @@ public class WebSocketEventListener {
             if ((room.getInviter() != null && room.getAccepting() != null) && (game == null || !game.isCompleted()))
                 messagingTemplate.convertAndSend("/room/" + room.getId(),
                         new ExitMessage(login, true));
-            removeDataAfterExit(room);
+            removeDataService.removeDataAfterExit(room);
         }
-    }
-
-    private void removeDataAfterExit(Room room) {
-        Game game = room.getGame();
-
-        if (game != null && !game.isCompleted()) {
-            game = gameService.findGameById(room.getGame().getId());
-            room.setGame(null);
-            roomService.updateRoom(room);
-            gameService.deleteUnfinishedGame(game);
-        }
-
-        User player_1 = userService.findByLogin(room.getInviter().getLogin());
-        removeGameData(player_1);
-
-        if (room.getAccepting() != null) {
-            User player_2 = userService.findByLogin(room.getAccepting().getLogin());
-            removeGameData(player_2);
-        }
-
-        roomService.deleteGameRoom(room);
-    }
-
-    private void removeGameData(User user) {
-        if (shipService.countShipsByPlayer(user) > 0)
-            shipService.deleteAll(user);
-
-        user.setPlayerFieldArranged(false);
-        userService.update(user);
     }
 }
