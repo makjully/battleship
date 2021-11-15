@@ -15,7 +15,7 @@ public interface RoomService {
 
     Room updateRoomWhenAccept(Room room, User accepting);
 
-    void deleteGameRoom(Room room);
+    void deleteRoom(Room room);
 
     Optional<Room> findById(Long id);
 

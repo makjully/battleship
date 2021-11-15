@@ -37,7 +37,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteGameRoom(Room room) {
+    public void deleteRoom(Room room) {
         roomRepository.delete(room);
     }
 
