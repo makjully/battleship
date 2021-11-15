@@ -5,12 +5,9 @@ import org.springframework.data.domain.Pageable;
 import ru.levelup.battleship.model.Room;
 import ru.levelup.battleship.model.User;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface RoomService {
-
-    void deleteExpiredRooms(LocalDateTime time);
 
     Page<Room> findActualGameRooms(Pageable pageable);
 
@@ -23,4 +20,6 @@ public interface RoomService {
     Optional<Room> findById(Long id);
 
     Room updateRoom(Room room);
+
+    Room findRoomByUser(User user);
 }

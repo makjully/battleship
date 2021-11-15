@@ -10,7 +10,6 @@ import ru.levelup.battleship.model.Room;
 import ru.levelup.battleship.model.User;
 import ru.levelup.battleship.services.RoomService;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -20,13 +19,8 @@ public class RoomServiceImpl implements RoomService {
     private RoomRepository roomRepository;
 
     @Override
-    public void deleteExpiredRooms(LocalDateTime time) {
-        roomRepository.deleteGameRoomsByAcceptingIsNullAndTimestampIsLessThanEqual(time);
-    }
-
-    @Override
     public Page<Room> findActualGameRooms(Pageable pageable) {
-        return roomRepository.findGameRoomsByAcceptingIsNullOrderByTimestampDesc(pageable);
+        return roomRepository.findRoomsByAcceptingIsNullOrderByTimestampDesc(pageable);
     }
 
     @Override
@@ -57,5 +51,10 @@ public class RoomServiceImpl implements RoomService {
     @Transactional(rollbackFor = Exception.class)
     public Room updateRoom(Room room) {
         return roomRepository.save(room);
+    }
+
+    @Override
+    public Room findRoomByUser(User user) {
+        return roomRepository.findRoomByUser(user);
     }
 }
