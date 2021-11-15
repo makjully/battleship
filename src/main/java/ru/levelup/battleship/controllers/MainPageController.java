@@ -33,6 +33,11 @@ public class MainPageController {
         return "main";
     }
 
+    @GetMapping("app/game/exit")
+    public RedirectView exitGame() {
+        return new RedirectView("/app/rooms");
+    }
+
     @PostMapping("app/main/join")
     public RedirectView joinRoom(@RequestParam("id") Long roomId,
                                  Authentication authentication) {
