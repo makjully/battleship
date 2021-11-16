@@ -42,7 +42,10 @@ function loadBoard() {
 
 function initField() {
     OPPONENT_FIELD.querySelectorAll("td")
-        .forEach(cell => cell.addEventListener("click", onCellClick));
+        .forEach(cell => {
+            cell.classList.add("aim");
+            cell.addEventListener("click", onCellClick)
+        });
 }
 
 function onCellClick(event) {
@@ -55,6 +58,7 @@ function onCellClick(event) {
         console.log(target);
         sendHit(target);
         event.target.removeEventListener("click", onCellClick);
+        event.target.classList().remove("aim");
     }
 }
 

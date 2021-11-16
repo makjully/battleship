@@ -27,6 +27,10 @@ td {
     background-size: cover;
 }
 
+.aim:hover{
+    background: gainsboro;
+}
+
 caption {
     height: calc(30px + 1.5rem);
 }
