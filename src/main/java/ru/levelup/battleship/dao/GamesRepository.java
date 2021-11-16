@@ -1,7 +1,6 @@
 package ru.levelup.battleship.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import ru.levelup.battleship.model.Game;
 import ru.levelup.battleship.model.User;
 
@@ -26,9 +25,4 @@ public interface GamesRepository extends JpaRepository<Game, Long> {
         game.setPlayerToMove(playerToMove);
         return save(game);
     }
-
-    long countGamesByWinner(User user);
-
-    @Query("select count(g) from Game g where (g.player1 = :user or g.player2 = :user) and g.isCompleted = true")
-    long countGamesByUser(User user);
 }

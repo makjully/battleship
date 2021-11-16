@@ -10,7 +10,7 @@ import ru.levelup.battleship.model.User;
 
 import java.time.LocalDateTime;
 
-public interface RoomRepository extends JpaRepository<Room, Long> {
+public interface RoomsRepository extends JpaRepository<Room, Long> {
 
     Page<Room> findRoomsByAcceptingIsNullOrderByTimestampDesc(Pageable pageable);
 
