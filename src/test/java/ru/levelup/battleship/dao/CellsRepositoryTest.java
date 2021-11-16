@@ -41,7 +41,7 @@ public class CellsRepositoryTest {
     private Cell cell_2_5;
 
     @Before
-    public void config() {
+    public void init() {
         cell_2_3 = new Cell(2, 3);
         cell_2_4 = new Cell(2, 4);
         cell_2_5 = new Cell(2, 5);
@@ -54,7 +54,7 @@ public class CellsRepositoryTest {
     }
 
     @Test
-    public void countCellsByShip() {
+    public void countCellsByShipTest() {
         Assert.assertEquals(3, cellsRepository.countCellsByShip(ship));
 
         cellsRepository.deleteAll();
@@ -62,20 +62,7 @@ public class CellsRepositoryTest {
     }
 
     @Test
-    public void deleteCell() {
-        cellsRepository.delete(cell_2_5);
-        Optional<Cell> deletedCell = cellsRepository.findById(cell_2_5.getId());
-        Assert.assertFalse(deletedCell.isPresent());
-        Assert.assertEquals(2, cellsRepository.countCellsByShip(ship));
-
-        cellsRepository.delete(cell_2_3);
-        deletedCell = cellsRepository.findById(cell_2_3.getId());
-        Assert.assertFalse(deletedCell.isPresent());
-        Assert.assertEquals(1, cellsRepository.countCellsByShip(ship));
-    }
-
-    @Test
-    public void findCellThatHit() {
+    public void findCellTest() {
         Cell found = cellsRepository.findCell(player, 2, 4);
         Assert.assertEquals(cell_2_4, found);
 
@@ -84,7 +71,7 @@ public class CellsRepositoryTest {
     }
 
     @Test
-    public void findCellsByUser() {
+    public void findCellsByUserTest() {
         List<Cell> found = cellsRepository.findAll(player);
 
         Assert.assertEquals(cell_2_3, found.get(0));

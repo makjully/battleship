@@ -31,14 +31,14 @@ public class GamesRepositoryTest {
     Game game;
 
     @Before
-    public void config() {
+    public void init() {
         player_1 = usersRepository.createUser("obiVan", "jedi_165");
         player_2 = usersRepository.createUser("darthMaul", "dark_side13");
         game = gamesRepository.createGame(player_1, player_2);
     }
 
     @Test
-    public void checkGameCreated() {
+    public void createGameTest() {
         Assert.assertTrue(gamesRepository.findById(game.getId()).isPresent());
         Assert.assertNotNull(game.getPlayerToMove());
 
@@ -46,7 +46,7 @@ public class GamesRepositoryTest {
     }
 
     @Test
-    public void updateGameWhenFinnish() {
+    public void updateGameWhenFinnishTest() {
         game = gamesRepository.endGame(game, true, player_1);
 
         Assert.assertTrue(game.isCompleted());
@@ -54,36 +54,11 @@ public class GamesRepositoryTest {
     }
 
     @Test
-    public void updateGameWhenMove() {
+    public void updateGameWhenMoveTest() {
         game = gamesRepository.updateGame(game, player_2);
         Assert.assertEquals(player_2, game.getPlayerToMove());
 
         game = gamesRepository.updateGame(game, player_1);
         Assert.assertEquals(player_1, game.getPlayerToMove());
-    }
-
-    @Test
-    public void countGamesByWinner() {
-        Game game_1 = gamesRepository.createGame(player_1, player_2);
-        gamesRepository.endGame(game_1, true, player_1);
-        Game game_2 = gamesRepository.createGame(player_1, player_2);
-        gamesRepository.endGame(game_2, true, player_1);
-        Game game_3 = gamesRepository.createGame(player_1, player_2);
-        gamesRepository.endGame(game_3, true, player_2);
-
-        Assert.assertEquals(2, gamesRepository.countGamesByWinner(player_1));
-        Assert.assertEquals(1, gamesRepository.countGamesByWinner(player_2));
-    }
-
-    @Test
-    public void countGamesByUser() {
-        Assert.assertEquals(0, gamesRepository.countGamesByUser(player_1));
-
-        gamesRepository.endGame(game, true, player_1);
-        Assert.assertEquals(1, gamesRepository.countGamesByUser(player_1));
-
-        Game game = gamesRepository.createGame(player_1, player_2);
-        gamesRepository.endGame(game, true, player_2);
-        Assert.assertEquals(2, gamesRepository.countGamesByUser(player_1));
     }
 }

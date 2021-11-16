@@ -28,13 +28,13 @@ public class UsersRepositoryTest {
     private User user;
 
     @Before
-    public void config() {
+    public void init() {
         user = new User("ahsoka", "snips_000");
         usersRepository.save(user);
     }
 
     @Test
-    public void createUser() {
+    public void createUserTest() {
         User user = usersRepository.createUser("login", "password");
         Optional<User> savedUser = usersRepository.findById(user.getId());
 
@@ -42,17 +42,26 @@ public class UsersRepositoryTest {
     }
 
     @Test
-    public void updateRating() {
+    public void updateRatingTest() {
         User updated = usersRepository.updateRating(user, 10.0);
 
         Assert.assertEquals(10.0, updated.getRating(), 0);
     }
 
     @Test
-    public void isPlayerFieldArranged() {
+    public void isPlayerFieldArrangedTest() {
         usersRepository.updateWhenBoardPrepared(user);
         Optional<User> updated = usersRepository.findById(user.getId());
 
         Assert.assertTrue(updated.stream().iterator().next().isPlayerFieldArranged());
+    }
+
+    @Test
+    public void findByLoginTest() {
+        User user_1 = usersRepository.findByLogin("ahsoka");
+        User user_2 = usersRepository.findByLogin("anakin");
+
+        Assert.assertNotNull(user_1);
+        Assert.assertNull(user_2);
     }
 }
