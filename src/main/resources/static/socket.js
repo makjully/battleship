@@ -63,13 +63,13 @@ function handleMove(response) {
         MESSAGE.innerText = "Sink a ship! " + response.userToMove + ", continue to move";
     }
 
-
     if (response.result === "Win") {
         isMyTurn = false;
         MESSAGE.innerText = response.userToMove + ", congrats! You won! Got 7.25 points";
     } else {
         isMyTurn = response.userToMove === LOGIN;
         highlightUserToMove();
+        blockOpponentField();
     }
 }
 
@@ -85,7 +85,8 @@ function onMessageReceived(msg) {
     if (response.hasOwnProperty("ready")) {
         const caption = response.login === LOGIN ? MY_USERNAME : OPPONENT_USERNAME;
         caption.classList.add("ready");
-        READY_BUTTON.disabled = true;
+        if (LOGIN === response.login)
+            READY_BUTTON.disabled = true;
 
         if (MY_USERNAME.classList.contains("ready") && OPPONENT_USERNAME.classList.contains("ready") && START_BUTTON) {
             START_BUTTON.disabled = false;
@@ -102,26 +103,36 @@ function onMessageReceived(msg) {
 
     // when game started
     if (response.hasOwnProperty("userToMove") && response.target === null) {
+        initField();
+
         isMyTurn = response.userToMove === LOGIN;
 
         MY_USERNAME.classList.remove("ready");
         OPPONENT_USERNAME.classList.remove("ready");
 
         MESSAGE.innerText = response.userToMove + ", you start the game!";
-        highlightUserToMove();
 
-        ARRANGE_BUTTON.style.visibility = "hidden";
-        READY_BUTTON.style.visibility = "hidden";
-        if (START_BUTTON) {
-            START_BUTTON.style.visibility = "hidden";
-        }
+        blockOpponentField();
+        highlightUserToMove();
+        hideButtons();
     }
 
     // when opponent left
     if (response.hasOwnProperty("disconnected")) {
-        ALERT.innerText = response.login + " has left the battle. Please, press 'Exit game' and join another " +
+        ALERT.innerText = response.login + " has left the battle. Please, press 'Exit game' and join another one " +
             "or start your own";
         ALERT.classList.remove("d-none");
+
+        OPPONENT_FIELD.classList.add("blocked");
+
+        hideButtons();
+
+        MESSAGE.innerText = "It's too sad but you can't continue the game...";
+
+        if (isMyTurn)
+            MY_USERNAME.classList.remove("highlight");
+        else
+            OPPONENT_USERNAME.classList.remove("highlight");
     }
 }
 

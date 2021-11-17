@@ -74,9 +74,27 @@ function highlightUserToMove() {
     caption.classList.add("highlight");
 }
 
+function blockOpponentField() {
+    if (!isMyTurn)
+        OPPONENT_FIELD.classList.add("blocked");
+    else
+        OPPONENT_FIELD.classList.remove("blocked");
+}
+
+function hideButtons() {
+    if (ARRANGE_BUTTON)
+        ARRANGE_BUTTON.style.visibility = "hidden";
+
+    if (READY_BUTTON)
+        READY_BUTTON.style.visibility = "hidden";
+
+    if (START_BUTTON) {
+        START_BUTTON.style.visibility = "hidden";
+    }
+}
+
 window.addEventListener("load", function () {
     loadBoard();
-    initField();
     connect();
     ALERT.classList.add("d-none");
 });

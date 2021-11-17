@@ -28,7 +28,12 @@ td {
 }
 
 .aim:hover{
-    background: gainsboro;
+    background: #d6d8d9;
+    opacity: 0.3;
+}
+
+.blocked {
+    opacity:0.35;
 }
 
 caption {
