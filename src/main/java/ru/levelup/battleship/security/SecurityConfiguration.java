@@ -23,7 +23,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers(loginUrl, "/signup").permitAll()
-                .antMatchers(HttpMethod.GET, "/**/*.js", "/**/*.css", "/**/*.svg").permitAll()
+                .antMatchers(HttpMethod.GET, "/**/*.js", "/**/*.css", "/**/*.svg", "/**/*.png").permitAll()
                 .antMatchers("/", "/app/**", "/api/**", "/ws/**").hasRole("user")
                 .anyRequest().denyAll();
 
