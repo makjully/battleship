@@ -11,6 +11,7 @@ const ARRANGE_BUTTON = document.querySelector("#arrange_button");
 const START_BUTTON = document.querySelector("#start_button");
 const ALERT = document.querySelector(".alert");
 const CLOSE_BUTTON = document.querySelector("#close_button");
+const EMOJI = document.querySelector("#emoji");
 
 function arrangeShips() {
     fetch("/api/arrange/" + LOGIN)
@@ -58,7 +59,7 @@ function onCellClick(event) {
         console.log(target);
         sendHit(target);
         event.target.removeEventListener("click", onCellClick);
-        event.target.classList().remove("aim");
+        event.target.classList.remove("aim");
     }
 }
 

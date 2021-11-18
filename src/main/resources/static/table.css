@@ -27,13 +27,13 @@ td {
     background-size: cover;
 }
 
-.aim:hover{
-    background: #d6d8d9;
-    opacity: 0.3;
+#opponent_board:not(.blocked) .aim:hover {
+    background-color: rgba(214, 216, 217, 0.5);
+    cursor: pointer;
 }
 
 .blocked {
-    opacity:0.35;
+    opacity: 0.35;
 }
 
 caption {
@@ -66,4 +66,32 @@ caption.highlight::before {
     font-size: 17px;
     font-weight: 600;
     color: #343a40;
+}
+
+#emoji {
+    width: 32px;
+    height: 32px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.laughing {
+    background-image: url("./images/emoji-laughing.svg");
+}
+
+.dizzy {
+    background-image: url("./images/emoji-dizzy.svg");
+}
+
+.expressionless {
+    background-image: url("./images/emoji-expressionless.svg");
+}
+
+.frown {
+    background-image: url("./images/emoji-frown.svg");
+}
+
+.sunglasses {
+    background-image: url("./images/emoji-sunglasses.svg");
 }

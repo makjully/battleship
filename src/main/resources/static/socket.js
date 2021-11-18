@@ -1,4 +1,5 @@
-const socket = new SockJS("http://localhost:8080/ws");
+//const socket = new SockJS("http://localhost:8080/ws");
+const socket = new SockJS("/ws");
 const stompClient = Stomp.over(socket);
 
 function connect() {
@@ -43,6 +44,7 @@ function disconnect() {
 }
 
 function handleMove(response) {
+    EMOJI.classList.remove();
     const field = response.target.username === LOGIN ? MY_FIELD : OPPONENT_FIELD;
     const cell = field.querySelector(`td[data-x="${response.target.x}"][data-y="${response.target.y}"]`);
 
@@ -53,19 +55,23 @@ function handleMove(response) {
     } else {
         cell.classList.add("miss");
         MESSAGE.innerText = "Miss.. Now is your turn, " + response.userToMove;
+        EMOJI.className = "expressionless";
     }
 
     if (response.result === "Hit") {
         MESSAGE.innerText = "Hit! " + response.userToMove + ", continue to move";
+        EMOJI.className = "laughing";
     }
 
     if (response.result === "Sink") {
         MESSAGE.innerText = "Sink a ship! " + response.userToMove + ", continue to move";
+        EMOJI.className = "dizzy";
     }
 
     if (response.result === "Win") {
         isMyTurn = false;
         MESSAGE.innerText = response.userToMove + ", congrats! You won! Got 7.25 points";
+        EMOJI.className = "sunglasses";
     } else {
         isMyTurn = response.userToMove === LOGIN;
         highlightUserToMove();
@@ -128,6 +134,7 @@ function onMessageReceived(msg) {
         hideButtons();
 
         MESSAGE.innerText = "It's too sad but you can't continue the game...";
+        EMOJI.className = "frown";
 
         if (isMyTurn)
             MY_USERNAME.classList.remove("highlight");
