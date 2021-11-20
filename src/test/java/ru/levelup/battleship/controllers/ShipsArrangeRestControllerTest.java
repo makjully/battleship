@@ -16,6 +16,7 @@ import ru.levelup.battleship.services.CellService;
 import ru.levelup.battleship.services.ShipsArrangeService;
 import ru.levelup.battleship.services.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.times;
@@ -48,11 +49,11 @@ public class ShipsArrangeRestControllerTest {
 
     @Before
     public void init() {
-        cells = List.of(
+        cells = new ArrayList<>(List.of(
                 new Cell(5, 5),
                 new Cell(5, 6),
                 new Cell(5, 7)
-        );
+        ));
     }
 
     @Test
@@ -87,5 +88,38 @@ public class ShipsArrangeRestControllerTest {
                 .andExpect(status().isNoContent());
 
         verify(userService, times(1)).findByLogin("user003");
+    }
+
+    @Test
+    public void loadBoardTest() throws Exception {
+        User user = new User("user002", "123");
+        cells.remove(0);
+        when(userService.findByLogin("user002")).thenReturn(user);
+        when(cellService.findAll(user)).thenReturn(cells);
+
+        mvc.perform(get("/api/loadBoard/user002")
+                        .with(user("user002").roles("user"))
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].coordinateX", is(5)))
+                .andExpect(jsonPath("$[0].coordinateY", is(6)))
+                .andExpect(jsonPath("$[1].coordinateX", is(5)))
+                .andExpect(jsonPath("$[1].coordinateY", is(7)));
+
+        verify(userService, times(1)).findByLogin("user002");
+        verify(cellService, times(1)).findAll(user);
+    }
+
+    @Test
+    public void loadBoardNoContentTest() throws Exception {
+        when(userService.findByLogin("user004")).thenReturn(null);
+
+        mvc.perform(get("/api/loadBoard/user004")
+                        .with(user("user004").roles("user"))
+                )
+                .andExpect(status().isNoContent());
+
+        verify(userService, times(1)).findByLogin("user004");
     }
 }
