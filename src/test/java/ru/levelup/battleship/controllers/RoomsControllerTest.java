@@ -2,12 +2,12 @@ package ru.levelup.battleship.controllers;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -16,6 +16,8 @@ import ru.levelup.battleship.model.Room;
 import ru.levelup.battleship.model.User;
 import ru.levelup.battleship.services.RoomService;
 import ru.levelup.battleship.services.UserService;
+
+import java.util.List;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -40,9 +42,6 @@ public class RoomsControllerTest {
     @MockBean
     private UserService userService;
 
-    @Mock
-    private Page<Room> rooms;
-
     @Test
     public void redirectTest() throws Exception {
         mvc.perform(get("/")
@@ -61,6 +60,8 @@ public class RoomsControllerTest {
     @Test
     public void findRoomsFirstPageTest() throws Exception {
         User user = new User("user001", "123");
+        Page<Room> rooms = new PageImpl<>(List.of(new Room(new User("user002", "123"))));
+
         when(userService.findByLogin("user001")).thenReturn(user);
         when(roomService.findActualGameRooms(PageRequest.of(0, RoomsController.PAGE_RESULTS)))
                 .thenReturn(rooms);
