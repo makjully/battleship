@@ -83,7 +83,7 @@ public class RoomsRepositoryTest {
     }
 
     @Test
-    public void updateRoomTest() {
+    public void updateRoomWhenAcceptTest() {
         Room room = rooms.stream()
                 .filter(r -> Objects.isNull(r.getAccepting()))
                 .findAny()
@@ -112,5 +112,12 @@ public class RoomsRepositoryTest {
         Room actual = roomsRepository.findRoomByUser(user);
 
         Assert.assertEquals(expecting, actual);
+    }
+
+    @Test
+    public void findRoomByIdTest() {
+        Optional<Room> found = roomsRepository.findById((long) random.nextInt(rooms.size()));
+
+        Assert.assertTrue(found.isPresent());
     }
 }

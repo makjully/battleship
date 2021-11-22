@@ -14,6 +14,8 @@ import ru.levelup.battleship.TestConfiguration;
 import ru.levelup.battleship.model.Game;
 import ru.levelup.battleship.model.User;
 
+import java.util.Optional;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfiguration.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -60,5 +62,19 @@ public class GamesRepositoryTest {
 
         game = gamesRepository.updateGame(game, player_1);
         Assert.assertEquals(player_1, game.getPlayerToMove());
+    }
+
+    @Test
+    public void findGameByIdTest() {
+        Game found = gamesRepository.getById(game.getId());
+        Assert.assertNotNull(found);
+    }
+
+    @Test
+    public void deleteUnfinishedGameTest() {
+        gamesRepository.delete(game);
+
+        Optional<Game> deleted = gamesRepository.findById(game.getId());
+        Assert.assertFalse(deleted.isPresent());
     }
 }
