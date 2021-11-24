@@ -34,48 +34,26 @@ import org.springframework.test.util.JsonPathExpectationsHelper;
 import ru.levelup.battleship.web_socket.MessagingController;
 import ru.levelup.battleship.web_socket.messages.ReadyMessage;
 
-/**
- * Tests for PortfolioController that instantiate directly the minimum
- * infrastructure necessary to test annotated controller methods and do not load
- * Spring configuration.
- *
- * Tests can create a Spring {@link org.springframework.messaging.Message} that
- * represents a STOMP frame and send it directly to the
- * SimpAnnotationMethodMessageHandler responsible for invoking annotated controller
- * methods.
- *
- * Test message channels can be used to detect any messages the controller may send.
- * It's also easy to inject the controller with a test-specific TradeService to
- * verify what trades are getting executed.
- *
- * The test strategy here is to test the behavior of controllers taking into
- * account controller annotations and nothing more. The tests are simpler to write
- * and faster to executed. They provide the most amount of control and that is good
- * for writing as many controller tests as needed. Separate tests are still required
- * to verify the Spring configuration but those tests should be fewer overall.
- *
- * @author Rossen Stoyanchev
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @AutoConfigureMockMvc
 @SpringBootTest(classes = TestMvcConfiguration.class)
 public class StandalonePortfolioControllerTests {
 
-    @Autowired
-    private MessagingController controller;
-
     private TestMessageChannel clientOutboundChannel;
 
     private TestAnnotationMethodHandler annotationMethodHandler;
 
-
     @Before
     public void setup() {
 
+        SimpMessagingTemplate messagingTemplate = new SimpMessagingTemplate(new TestMessageChannel());
+        MessagingController controller = new MessagingController(null, null, new TestUserService(),
+                null, messagingTemplate);
+
         clientOutboundChannel = new TestMessageChannel();
 
-        annotationMethodHandler = new TestAnnotationMethodHandler(
-                new TestMessageChannel(), clientOutboundChannel, new SimpMessagingTemplate(new TestMessageChannel()));
+        annotationMethodHandler = new TestAnnotationMethodHandler(new TestMessageChannel(), clientOutboundChannel,
+                messagingTemplate);
 
         this.annotationMethodHandler.registerHandler(controller);
         this.annotationMethodHandler.setDestinationPrefixes(Arrays.asList("/app"));
@@ -87,19 +65,19 @@ public class StandalonePortfolioControllerTests {
 
     @Test
     public void getPositions() throws Exception {
-        ReadyMessage ready = new ReadyMessage("user001", true);
+        ReadyMessage ready = new ReadyMessage("ws", true);
         byte[] payload = new ObjectMapper().writeValueAsBytes(ready);
 
         StompHeaderAccessor headers = StompHeaderAccessor.create(StompCommand.SEND);
         headers.setSubscriptionId("0");
-        headers.setDestination("/app/ready/27");
+        headers.setDestination("/ready/27");
         headers.setSessionId("0");
         headers.setSessionAttributes(new HashMap<>());
         Message<byte[]> message = MessageBuilder.withPayload(payload).setHeaders(headers).build();
 
         annotationMethodHandler.handleMessage(message);
 
-        assertEquals(1, this.clientOutboundChannel.getMessages().size());
+       assertEquals(1, clientOutboundChannel.getMessages().size());
         Message<?> reply = this.clientOutboundChannel.getMessages().get(0);
 
         StompHeaderAccessor replyHeaders = StompHeaderAccessor.wrap(reply);
@@ -142,11 +120,6 @@ public class StandalonePortfolioControllerTests {
     }
 
 
-    /**
-     * An extension of SimpAnnotationMethodMessageHandler that exposes a (public)
-     * method for manually registering a controller, rather than having it
-     * auto-discovered in the Spring ApplicationContext.
-     */
     private static class TestAnnotationMethodHandler extends SimpAnnotationMethodMessageHandler {
 
         public TestAnnotationMethodHandler(SubscribableChannel inChannel, MessageChannel outChannel,
@@ -166,7 +139,6 @@ class TestMessageChannel extends AbstractSubscribableChannel {
 
     private final List<Message<?>> messages = new ArrayList<>();
 
-
     public List<Message<?>> getMessages() {
         return this.messages;
     }
@@ -176,5 +148,4 @@ class TestMessageChannel extends AbstractSubscribableChannel {
         this.messages.add(message);
         return true;
     }
-
 }

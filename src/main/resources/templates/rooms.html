@@ -21,7 +21,7 @@
             <li class="nav-item">
                 <a class="nav-link">
                     hello,&nbsp;<span th:text="${user.login}"></span>&nbsp;(<span
-                        th:text="${#numbers.formatDecimal(user.rating, 0, 1, 'POINT')}"></span>)
+                        th:text="${user.rating > 0 ? #numbers.formatDecimal(user.rating, 0, 1, 'POINT') : 0.0}"></span>)
                 </a>
             </li>
         </ul>
