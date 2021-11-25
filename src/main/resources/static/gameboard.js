@@ -1,5 +1,7 @@
 "use strict";
 let isMyTurn = false;
+let myShipsCount = 0;
+let opponentShipsCount = 0;
 const MESSAGE = document.querySelector("#moveMessage");
 const OPPONENT_FIELD = document.querySelector("#opponent_board");
 const OPPONENT_USERNAME = OPPONENT_FIELD.querySelector("caption");
@@ -12,6 +14,8 @@ const START_BUTTON = document.querySelector("#start_button");
 const ALERT = document.querySelector(".alert");
 const CLOSE_BUTTON = document.querySelector("#close_button");
 const EMOJI = document.querySelector("#emoji");
+const MY_SHIPS = document.querySelector("#my_ships");
+const OPPONENT_SHIPS = document.querySelector("#opponent_ships");
 
 function arrangeShips() {
     fetch("/api/arrange/" + LOGIN)
@@ -92,6 +96,11 @@ function hideButtons() {
     if (START_BUTTON) {
         START_BUTTON.style.visibility = "hidden";
     }
+}
+
+function showShipsCount() {
+    MY_SHIPS.innerHTML = 'ships sunk : <span style="font-weight: 600">' + myShipsCount + '</span>';
+    OPPONENT_SHIPS.innerHTML = 'ships sunk : <span style="font-weight: 600">' + opponentShipsCount + '</span>';
 }
 
 window.addEventListener("load", function () {

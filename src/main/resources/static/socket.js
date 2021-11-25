@@ -67,8 +67,17 @@ function handleMove(response) {
         EMOJI.className = "dizzy";
     }
 
+    if (response.result === "Sink" || response.result === "Win") {
+        if (isMyTurn)
+            opponentShipsCount += 1;
+        else myShipsCount += 1;
+
+        showShipsCount();
+    }
+
     if (response.result === "Win") {
         isMyTurn = false;
+        OPPONENT_FIELD.classList.add("blocked");
         MESSAGE.innerText = response.userToMove + ", congrats! You won! Got 7.25 points";
         EMOJI.className = "sunglasses";
     } else {
@@ -117,9 +126,13 @@ function onMessageReceived(msg) {
 
         MESSAGE.innerText = response.userToMove + ", you start the game!";
 
+        MY_SHIPS.classList.add("ships_count");
+        OPPONENT_SHIPS.classList.add("ships_count");
+
         blockOpponentField();
         highlightUserToMove();
         hideButtons();
+        showShipsCount();
     }
 
     // when opponent left
