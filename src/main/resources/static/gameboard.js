@@ -16,6 +16,7 @@ const CLOSE_BUTTON = document.querySelector("#close_button");
 const EMOJI = document.querySelector("#emoji");
 const MY_SHIPS = document.querySelector("#my_ships");
 const OPPONENT_SHIPS = document.querySelector("#opponent_ships");
+const LINE = document.querySelector(".style5");
 
 function arrangeShips() {
     fetch("/api/arrange/" + LOGIN)
@@ -107,6 +108,7 @@ window.addEventListener("load", function () {
     loadBoard();
     connect();
     ALERT.classList.add("d-none");
+    LINE.classList.add("d-none");
 });
 
 ARRANGE_BUTTON.addEventListener("click", function () {

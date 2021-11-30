@@ -44,7 +44,8 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exit-modal-label">Confirm leaving the game</h5>
-                                    <button id="close_button" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <button id="close_button" type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
@@ -52,7 +53,8 @@
                                     Are you sure?
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Cancel
+                                    </button>
                                     <button type="submit" class="btn btn-secondary">Exit the game</button>
                                 </div>
                             </div>
@@ -118,36 +120,39 @@
             </div>
         </div>
 
-    <div class="form-row text-center" style="margin-top: 35px">
-        <div class="col-12">
-            <span id="moveMessage"></span>
+        <hr class="style5">
+
+        <div class="form-row text-center" style="margin-top: 20px">
+            <div class="col-12">
+                <span id="moveMessage"></span>
+            </div>
         </div>
-    </div>
-    <div class="form-row text-center" style="margin-top: 15px">
-        <div class="col-12">
-            <span id="emoji"></span>
+        <div class="form-row text-center" style="margin-top: 15px">
+            <div class="col-12">
+                <span id="emoji"></span>
+            </div>
         </div>
-    </div>
-    <div class="form-row text-center">
-        <div class="col-12">
-            <button id="arrange_button" class="btn btn-outline-dark"
-                    style="width: 300px">Arrange ships
-            </button>
+        <div class="form-row text-center">
+            <div class="col-12">
+                <button id="arrange_button" class="btn btn-outline-dark"
+                        style="width: 300px">Arrange ships
+                </button>
+            </div>
         </div>
-    </div>
-    <div class="form-row text-center" style="margin-top: 15px">
-        <div class="col-12">
-            <button id="ready_button" class="btn btn-outline-dark"
-                    style="width: 300px" disabled>Ready to play
-            </button>
+        <div class="form-row text-center" style="margin-top: 15px">
+            <div class="col-12">
+                <button id="ready_button" class="btn btn-outline-dark"
+                        style="width: 300px" disabled>Ready to play
+                </button>
+            </div>
         </div>
-    </div>
-    <div class="form-row text-center" style="margin-top: 15px">
-        <div class="col-12">
-            <button id="start_button" th:if="${room.inviter.equals(user)}" class="btn btn-dark" style="width: 300px"
-                    disabled>
-                Start game
-            </button>
+        <div class="form-row text-center" style="margin-top: 15px">
+            <div class="col-12">
+                <button id="start_button" th:if="${room.inviter.equals(user)}" class="btn btn-dark" style="width: 300px"
+                        disabled>
+                    Start game
+                </button>
+            </div>
         </div>
     </div>
 </div>

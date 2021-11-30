@@ -129,6 +129,8 @@ function onMessageReceived(msg) {
         MY_SHIPS.classList.add("ships_count");
         OPPONENT_SHIPS.classList.add("ships_count");
 
+        LINE.classList.remove("d-none");
+
         blockOpponentField();
         highlightUserToMove();
         hideButtons();
