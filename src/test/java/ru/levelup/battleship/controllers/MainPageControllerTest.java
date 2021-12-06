@@ -130,7 +130,7 @@ public class MainPageControllerTest {
                         .param("id", "1")
                 )
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/app/rooms"));
+                .andExpect(redirectedUrlTemplate("/app/rooms?inaccessible={inaccessible}", "true"));
 
         verify(userService, times(1)).findByLogin("user001");
         verify(roomService, times(1)).findById(roomId);
