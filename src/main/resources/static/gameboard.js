@@ -107,8 +107,6 @@ function showShipsCount() {
 window.addEventListener("load", function () {
     loadBoard();
     connect();
-    ALERT.classList.add("d-none");
-    LINE.classList.add("d-none");
 });
 
 ARRANGE_BUTTON.addEventListener("click", function () {
