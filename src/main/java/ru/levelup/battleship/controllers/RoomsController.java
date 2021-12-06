@@ -30,14 +30,15 @@ public class RoomsController {
 
     @GetMapping("app/rooms")
     public String returnGameRooms(Model model,
+                                  @RequestParam(defaultValue = "false") boolean inaccessible,
                                   @RequestParam(defaultValue = "1") int page,
                                   Authentication authentication) {
         User user = userService.findByLogin(authentication.getName());
         model.addAttribute("user", user);
-
         model.addAttribute("page", page);
+        model.addAttribute("inaccessible", inaccessible);
 
-        Page<Room> rooms = roomService.findActualGameRooms(PageRequest.of(page - 1, PAGE_RESULTS));
+        Page<Room> rooms = roomService.findAvailableRooms(user, PageRequest.of(page - 1, PAGE_RESULTS));
         model.addAttribute("rooms", rooms);
 
         return "rooms";

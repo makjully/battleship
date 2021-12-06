@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 public interface RoomsRepository extends JpaRepository<Room, Long> {
 
-    Page<Room> findRoomsByAcceptingIsNullOrderByTimestampDesc(Pageable pageable);
+    Page<Room> findByAcceptingIsNullAndInviterIsNotOrderByTimestampDesc(User user, Pageable pageable);
 
     default Room createRoom(User inviter) {
         return save(new Room(inviter));

@@ -60,11 +60,12 @@ public class RoomsRepositoryTest {
 
     @Test
     public void findAvailableRoomsTest() {
-        Page<Room> actual = roomsRepository.findRoomsByAcceptingIsNullOrderByTimestampDesc(
-                PageRequest.of(0, 10));
+        User user = users.get(random.nextInt(users.size()));
+        Page<Room> actual = roomsRepository.findByAcceptingIsNullAndInviterIsNotOrderByTimestampDesc(
+                user, PageRequest.of(0, 10));
 
         List<Room> expected = rooms.stream()
-                .filter(room -> Objects.isNull(room.getAccepting()))
+                .filter(room -> Objects.isNull(room.getAccepting()) && !Objects.equals(user, room.getInviter()))
                 .sorted(Comparator.comparing(Room::getTimestamp).reversed())
                 .collect(Collectors.toList());
 

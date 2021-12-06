@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface RoomService {
 
-    Page<Room> findActualGameRooms(Pageable pageable);
+    Page<Room> findAvailableRooms(User user, Pageable pageable);
 
     Room createRoom(User inviter);
 

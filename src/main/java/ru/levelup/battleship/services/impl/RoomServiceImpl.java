@@ -19,8 +19,8 @@ public class RoomServiceImpl implements RoomService {
     private RoomsRepository roomsRepository;
 
     @Override
-    public Page<Room> findActualGameRooms(Pageable pageable) {
-        return roomsRepository.findRoomsByAcceptingIsNullOrderByTimestampDesc(pageable);
+    public Page<Room> findAvailableRooms(User user, Pageable pageable) {
+        return roomsRepository.findByAcceptingIsNullAndInviterIsNotOrderByTimestampDesc(user, pageable);
     }
 
     @Override

@@ -139,7 +139,7 @@ function onMessageReceived(msg) {
 
     // when opponent left
     if (response.hasOwnProperty("disconnected")) {
-        ALERT.innerText = response.login + " has left the battle. Please, press 'Exit game' and join another one " +
+        ALERT.innerText = response.login + " has left the battle. Please press 'Exit game' and join another one " +
             "or start your own";
         ALERT.classList.remove("d-none");
 

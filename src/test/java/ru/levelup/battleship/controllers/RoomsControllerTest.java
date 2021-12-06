@@ -65,7 +65,7 @@ public class RoomsControllerTest {
         Page<Room> rooms = new PageImpl<>(List.of(new Room(new User("user002", "123"))));
 
         when(userService.findByLogin("user001")).thenReturn(user);
-        when(roomService.findActualGameRooms(PageRequest.of(0, RoomsController.PAGE_RESULTS)))
+        when(roomService.findAvailableRooms(user, PageRequest.of(0, RoomsController.PAGE_RESULTS)))
                 .thenReturn(rooms);
 
         mvc.perform(get("/app/rooms")
@@ -77,7 +77,7 @@ public class RoomsControllerTest {
                 .andExpect(model().attribute("rooms", rooms));
 
         verify(userService, times(1)).findByLogin("user001");
-        verify(roomService, times(1)).findActualGameRooms(
+        verify(roomService, times(1)).findAvailableRooms(user,
                 PageRequest.of(0, RoomsController.PAGE_RESULTS));
     }
 }
