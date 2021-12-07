@@ -139,8 +139,8 @@ function onMessageReceived(msg) {
 
     // when opponent left
     if (response.hasOwnProperty("disconnected")) {
-        ALERT.innerText = response.login + " has left the battle. Please press 'Exit game' and join another one " +
-            "or start your own";
+        ALERT.innerHTML = '<span style="font-weight: 700">' + response.login + '</span>' + " has left the battle. " +
+            "Please press 'Exit game' and join another one or start your own";
         ALERT.classList.remove("d-none");
 
         OPPONENT_FIELD.classList.add("blocked");
