@@ -8,8 +8,6 @@ import org.springframework.data.repository.query.Param;
 import ru.levelup.battleship.model.Room;
 import ru.levelup.battleship.model.User;
 
-import java.time.LocalDateTime;
-
 public interface RoomsRepository extends JpaRepository<Room, Long> {
 
     Page<Room> findByAcceptingIsNullAndInviterIsNotOrderByTimestampDesc(User user, Pageable pageable);

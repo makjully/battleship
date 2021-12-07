@@ -8,8 +8,6 @@ import ru.levelup.battleship.model.Ship;
 import ru.levelup.battleship.model.User;
 import ru.levelup.battleship.services.ShipService;
 
-import java.util.List;
-
 @Service
 @AllArgsConstructor
 public class ShipServiceImpl implements ShipService {
